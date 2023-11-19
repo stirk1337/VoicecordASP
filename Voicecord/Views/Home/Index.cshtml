@@ -1,8 +1,49 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
 }
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <div class="container">
+        <div>
+             
+            <label>name:</label>
+            <p id="dispname"> @User.Identity?.Name.ToString() </p>
+        </div>
+
+        <div class="mt-5">
+            <input type="text" id="message" />
+            <input type="button" id="sendmassage" value="Send" />
+        </div>
+    </div>
+    <div class="mt-3">
+        <ul id="discussion"></ul>
+
+    </div>
+
 </div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/6.0.1/signalr.js"></script>
+
+<script>
+    
+    var connection = new signalR.HubConnectionBuilder().withUrl("/chat").build();
+
+    connection.start();
+
+    document.getElementById("sendmassage").addEventListener("click", function (event) {
+        var user = document.getElementById("username").textContent;
+        var message = document.getElementById("message").value;
+        connection.invoke("SendMessage", user, message);
+        event.preventDefault();
+
+    });
+    connection.on("ReceiveMessage", function (user, message) {
+        var encodedMsg = user + ": " + message;
+        var li = document.createElement("li");
+        li.textContent = encodedMsg;
+        document.getElementById("discussion").appendChild(li);
+    });
+
+</script>
