@@ -1,6 +1,8 @@
-﻿namespace Voicecord.Models
+﻿using Microsoft.AspNetCore.Identity;
+
+namespace Voicecord.Models
 {
-    public class ApplicationUser
+    public class ApplicationUser: IdentityUser
     {
     }
 }
