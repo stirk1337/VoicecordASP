@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Voicecord.Models;
 
 namespace Voicecord.Data
 {
@@ -9,5 +10,6 @@ namespace Voicecord.Data
             : base(options)
         {
         }
+        public DbSet<UserGroup> UserGroups { get; set; }
     }
 }

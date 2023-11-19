@@ -9,6 +9,6 @@ namespace Voicecord.Models
         public List<ApplicationUser> Users { get; set; }
         public List<Candidate> OfferCandidates { get; set; }
         public List<Candidate> AnswerCandidates { get; set; }
-        public Dictionary<string,string> OffersDictionary { get; set; }// key=offer,value=answer (колво пар человек в собрании)
+        public List<OffersAnswers> OffersAns { get; set; }// key=offer,value=answer (колво пар человек в собрании)
     }
 }
