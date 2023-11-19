@@ -13,6 +13,17 @@ namespace Voicecord.Controllers
             _logger = logger;
         }
 
+        [HttpGet]
+        public IActionResult GetVoiceCommand(object AnyObj)
+        {
+            return View();
+        }
+        [HttpPost]
+        public string PostAny()
+        {
+            return string.Empty;
+        }
+
         public IActionResult Index()
         {
             return View();
