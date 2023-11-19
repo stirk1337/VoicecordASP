@@ -1,12 +1,16 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
 }
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
 
 <div class="text-center">
     <div class="container">
         <div>
+             
             <label>name:</label>
-            <input type="text" id="dispname" />
+            <p id="dispname"> @User.Identity?.Name.ToString() </p>
         </div>
 
         <div class="mt-5">
@@ -23,12 +27,13 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/6.0.1/signalr.js"></script>
 
 <script>
+    
     var connection = new signalR.HubConnectionBuilder().withUrl("/chat").build();
 
     connection.start();
 
     document.getElementById("sendmassage").addEventListener("click", function (event) {
-        var user = document.getElementById("dispname").value;
+        var user = document.getElementById("username").textContent;
         var message = document.getElementById("message").value;
         connection.invoke("SendMessage", user, message);
         event.preventDefault();

@@ -1,9 +1,11 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using Voicecord.Models;
 
 namespace Voicecord.Controllers
 {
+    [Authorize]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -15,6 +17,7 @@ namespace Voicecord.Controllers
 
         public IActionResult Index()
         {
+            ViewBag.user = "fefe";
             return View();
         }
 
