@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using Voicecord.Models;
 
@@ -11,17 +11,6 @@ namespace Voicecord.Controllers
         public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;
-        }
-
-        [HttpGet]
-        public IActionResult GetVoiceCommand(object AnyObj)
-        {
-            return View();
-        }
-        [HttpPost]
-        public string PostAny()
-        {
-            return string.Empty;
         }
 
         public IActionResult Index()
