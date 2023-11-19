@@ -3,37 +3,41 @@
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <body>
-        <h2>1. Start your Webcam</h2>
-        <div class="videos">
-            <span>
-                <h3>Local Stream</h3>
-                <video id="webcamVideo" autoplay playsinline></video>
-            </span>
-            <span>
-                <h3>Remote Stream</h3>
-                <video id="remoteVideo" autoplay playsinline></video>
-            </span>
+    <div class="container">
+    <div>
+        <label>name:</label>
+        <input type="text" id="dispname" />
+    </div>
+    
+    <div class="mt-5">
+        <input type="text" id="message"/>
+        <input type="button" id="sendmassage" value="Send" />
+    </div>
+    </div>
+    <div class="mt-3">
+        <ul id="discussion"></ul>
+         
+    </div>
 
-
-        </div>
-
-        <button id="webcamButton">Start webcam</button>
-        <h2>2. Create a new Call</h2>
-        <button id="callButton" disabled>Create Call (offer)</button>
-
-        <h2>3. Join a Call</h2>
-        <p>Answer the call from a different browser window or device</p>
-
-        <input id="callInput" />
-        <button id="answerButton" disabled>Answer</button>
-
-        <h2>4. Hangup</h2>
-
-        <button id="hangupButton" disabled>Hangup</button>
-
-        <script type="module" src="/main.js"></script>
-
-    </body>
 </div>
+<script src="~/lib/signalr/signalr.js"></script>
+
+<script>
+    var connection = new signalR.HubConnectionBuilder().withUrl("/chat").build();
+
+    connection.start();
+
+    document.getElementById("sendmassage").addEventListener("click", function (event) {
+        var user = document.getElementById("dispname").value;
+        var message = document.getElementById("message").value;
+        connection.invoke("SendMessage", user, message);
+        event.preventDefault();
+
+    });
+    connection.on("ReceiveMessage", function (user, message) {
+        var encodedMsg = user + ": " + message;
+        var li = document.createElement("li");
+        document.getElementById("discussion").appendChild(li);
+    });
+
+</script>
