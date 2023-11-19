@@ -8,7 +8,7 @@
 <div class="text-center">
     <div class="container">
         <div>
-             
+
             <label>name:</label>
             <p id="dispname"> @User.Identity?.Name.ToString() </p>
         </div>
@@ -22,12 +22,13 @@
         <ul id="discussion"></ul>
 
     </div>
+    <a href="/Home/CreateGroup/">Создать канал</a>
 
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/6.0.1/signalr.js"></script>
 
 <script>
-    
+
     var connection = new signalR.HubConnectionBuilder().withUrl("/chat").build();
 
     connection.start();

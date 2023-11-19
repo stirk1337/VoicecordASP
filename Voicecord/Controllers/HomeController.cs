@@ -21,6 +21,28 @@ namespace Voicecord.Controllers
             return View();
         }
 
+        [HttpPost]
+        public string CreateGroup(string name)
+        {
+
+
+            //db.UserGroups.Add(new UserGroup()
+            //{
+            //    Name = name,
+            //    LinkImageGroup = "somelink",
+            //    Users = new List<ApplicationUser>() {}
+            //});
+            return string.Empty;
+        }
+
+        public IActionResult CreateGroup()
+        {
+            return View();
+        }
+
+
+
+
         public IActionResult Privacy()
         {
             return View();
