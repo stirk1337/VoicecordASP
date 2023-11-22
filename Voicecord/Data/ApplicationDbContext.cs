@@ -1,15 +1,16 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Voicecord.Models;
 
 namespace Voicecord.Data
 {
-    public class ApplicationDbContext : IdentityDbContext
-    {
+   public class ApplicationDbContext : DbContext
+   {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
-            : base(options)
+                : base(options)
         {
         }
-        public DbSet<UserGroup> UserGroups { get; set; }
+        public DbSet<ApplicationUser> Users { get; set; }
+        public DbSet<UserGroup> Groups { get; set; }
+        
     }
 }

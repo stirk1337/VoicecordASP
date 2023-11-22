@@ -5,7 +5,7 @@ using Voicecord.Models;
 
 namespace Voicecord.Controllers
 {
-    [Authorize]
+    //[Authorize]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -17,31 +17,8 @@ namespace Voicecord.Controllers
 
         public IActionResult Index()
         {
-            ViewBag.user = "fefe";
             return View();
         }
-
-        [HttpPost]
-        public string CreateGroup(string name)
-        {
-
-
-            //db.UserGroups.Add(new UserGroup()
-            //{
-            //    Name = name,
-            //    LinkImageGroup = "somelink",
-            //    Users = new List<ApplicationUser>() {}
-            //});
-            return string.Empty;
-        }
-
-        public IActionResult CreateGroup()
-        {
-            return View();
-        }
-
-
-
 
         public IActionResult Privacy()
         {

@@ -7,6 +7,5 @@ namespace Voicecord.Models
         [Key]
         public int Id { get; set; }
         public List<Message> Messages { get; set; }
-       
     }
 }

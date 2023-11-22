@@ -3,36 +3,16 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace Voicecord.Data.Migrations
+namespace Voicecord.Migrations
 {
     /// <inheritdoc />
-    public partial class First : Migration
+    public partial class Migration1 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<string>(
-                name: "Discriminator",
-                table: "AspNetUsers",
-                type: "nvarchar(21)",
-                maxLength: 21,
-                nullable: false,
-                defaultValue: "");
-
-            migrationBuilder.AddColumn<int>(
-                name: "UserGroupId",
-                table: "AspNetUsers",
-                type: "int",
-                nullable: true);
-
-            migrationBuilder.AddColumn<int>(
-                name: "VoiceChatId",
-                table: "AspNetUsers",
-                type: "int",
-                nullable: true);
-
             migrationBuilder.CreateTable(
-                name: "UserGroups",
+                name: "Groups",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -42,7 +22,7 @@ namespace Voicecord.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UserGroups", x => x.Id);
+                    table.PrimaryKey("PK_Groups", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -57,9 +37,9 @@ namespace Voicecord.Data.Migrations
                 {
                     table.PrimaryKey("PK_Chat", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Chat_UserGroups_UserGroupId",
+                        name: "FK_Chat_Groups_UserGroupId",
                         column: x => x.UserGroupId,
-                        principalTable: "UserGroups",
+                        principalTable: "Groups",
                         principalColumn: "Id");
                 });
 
@@ -75,36 +55,9 @@ namespace Voicecord.Data.Migrations
                 {
                     table.PrimaryKey("PK_VoiceChat", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_VoiceChat_UserGroups_UserGroupId",
+                        name: "FK_VoiceChat_Groups_UserGroupId",
                         column: x => x.UserGroupId,
-                        principalTable: "UserGroups",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Message",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    OwnerId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    TextMessage = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Date = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ChatId = table.Column<int>(type: "int", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Message", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Message_AspNetUsers_OwnerId",
-                        column: x => x.OwnerId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Message_Chat_ChatId",
-                        column: x => x.ChatId,
-                        principalTable: "Chat",
+                        principalTable: "Groups",
                         principalColumn: "Id");
                 });
 
@@ -156,15 +109,59 @@ namespace Voicecord.Data.Migrations
                         principalColumn: "Id");
                 });
 
-            migrationBuilder.CreateIndex(
-                name: "IX_AspNetUsers_UserGroupId",
-                table: "AspNetUsers",
-                column: "UserGroupId");
+            migrationBuilder.CreateTable(
+                name: "Users",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UserGroupId = table.Column<int>(type: "int", nullable: true),
+                    VoiceChatId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Users", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Users_Groups_UserGroupId",
+                        column: x => x.UserGroupId,
+                        principalTable: "Groups",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Users_VoiceChat_VoiceChatId",
+                        column: x => x.VoiceChatId,
+                        principalTable: "VoiceChat",
+                        principalColumn: "Id");
+                });
 
-            migrationBuilder.CreateIndex(
-                name: "IX_AspNetUsers_VoiceChatId",
-                table: "AspNetUsers",
-                column: "VoiceChatId");
+            migrationBuilder.CreateTable(
+                name: "Message",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    OwnerId = table.Column<int>(type: "int", nullable: false),
+                    TextMessage = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Date = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ChatId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Message", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Message_Chat_ChatId",
+                        column: x => x.ChatId,
+                        principalTable: "Chat",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Message_Users_OwnerId",
+                        column: x => x.OwnerId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Candidate_VoiceChatId",
@@ -197,36 +194,24 @@ namespace Voicecord.Data.Migrations
                 column: "VoiceChatId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Users_UserGroupId",
+                table: "Users",
+                column: "UserGroupId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Users_VoiceChatId",
+                table: "Users",
+                column: "VoiceChatId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_VoiceChat_UserGroupId",
                 table: "VoiceChat",
                 column: "UserGroupId");
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_AspNetUsers_UserGroups_UserGroupId",
-                table: "AspNetUsers",
-                column: "UserGroupId",
-                principalTable: "UserGroups",
-                principalColumn: "Id");
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_AspNetUsers_VoiceChat_VoiceChatId",
-                table: "AspNetUsers",
-                column: "VoiceChatId",
-                principalTable: "VoiceChat",
-                principalColumn: "Id");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
-                name: "FK_AspNetUsers_UserGroups_UserGroupId",
-                table: "AspNetUsers");
-
-            migrationBuilder.DropForeignKey(
-                name: "FK_AspNetUsers_VoiceChat_VoiceChatId",
-                table: "AspNetUsers");
-
             migrationBuilder.DropTable(
                 name: "Candidate");
 
@@ -240,30 +225,13 @@ namespace Voicecord.Data.Migrations
                 name: "Chat");
 
             migrationBuilder.DropTable(
+                name: "Users");
+
+            migrationBuilder.DropTable(
                 name: "VoiceChat");
 
             migrationBuilder.DropTable(
-                name: "UserGroups");
-
-            migrationBuilder.DropIndex(
-                name: "IX_AspNetUsers_UserGroupId",
-                table: "AspNetUsers");
-
-            migrationBuilder.DropIndex(
-                name: "IX_AspNetUsers_VoiceChatId",
-                table: "AspNetUsers");
-
-            migrationBuilder.DropColumn(
-                name: "Discriminator",
-                table: "AspNetUsers");
-
-            migrationBuilder.DropColumn(
-                name: "UserGroupId",
-                table: "AspNetUsers");
-
-            migrationBuilder.DropColumn(
-                name: "VoiceChatId",
-                table: "AspNetUsers");
+                name: "Groups");
         }
     }
 }
