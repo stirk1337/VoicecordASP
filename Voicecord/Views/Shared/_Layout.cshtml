@@ -19,16 +19,34 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Register">
-                                Регистрация
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-controller="Account" asp-action="Login">
-                                Вход
-                            </a>
-                        </li>
+
+                        
+                         @if (!User.Identity.IsAuthenticated)
+                        {
+
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Register">
+                                    Регистрация
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="Account" asp-action="Login">
+                                    Вход
+                                </a>
+                            </li>
+                        }
+                        
+                       @if (User.Identity.IsAuthenticated)
+                        {
+                            <p>@User.Identity.Name</p>
+
+                            <form method="post" asp-controller="Account" asp-action="Logout">
+                                <input class="" nav-link text-dark" type="submit" value="Выход" />
+                            </form>
+                        }
+
+                    
+                    
                     </ul>
                 </div>
             </div>

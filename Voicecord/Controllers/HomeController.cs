@@ -5,7 +5,7 @@ using Voicecord.Models;
 
 namespace Voicecord.Controllers
 {
-    //[Authorize]
+    [Authorize]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -17,6 +17,7 @@ namespace Voicecord.Controllers
 
         public IActionResult Index()
         {
+
             return View();
         }
 
