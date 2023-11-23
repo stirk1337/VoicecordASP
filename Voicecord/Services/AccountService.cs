@@ -14,6 +14,7 @@ using Voicecord.Domain.ViewModels.Account;
 using Voicecord.Helpers;
 using Voicecord.Interfaces;
 using Voicecord.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace Voicecord.Service.Implementations
 {
@@ -24,6 +25,7 @@ namespace Voicecord.Service.Implementations
         //private readonly IBaseRepository<Basket> _basketRepository;
         private readonly ILogger<AccountService> _logger;
 
+
         public AccountService(IBaseRepository<ApplicationUser> userRepository,
             ILogger<AccountService> logger )
         {
@@ -33,6 +35,7 @@ namespace Voicecord.Service.Implementations
 
         public async Task<BaseResponse<ClaimsIdentity>> Register(RegisterViewModel model)
         {
+            
             try
             {
                 var user = await _userRepository.GetAll().FirstOrDefaultAsync(x => x.UserName == model.Name);

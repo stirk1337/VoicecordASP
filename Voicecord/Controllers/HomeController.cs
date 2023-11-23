@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using Voicecord.Models;
+using Voicecord.Service.Implementations;
 
 namespace Voicecord.Controllers
 {
@@ -9,11 +10,28 @@ namespace Voicecord.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+       
 
         public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;
         }
+
+        [HttpGet]
+        public IActionResult GetUserGroup()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult CreateUserGroup()
+        {
+
+
+            return View();
+        }
+
+
 
         public IActionResult Index()
         {

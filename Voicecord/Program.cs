@@ -6,6 +6,7 @@ using Voicecord.Hubs;
 using Voicecord.Interfaces;
 using Voicecord.Models;
 using Voicecord.Service.Implementations;
+using Voicecord.Services;
 
 namespace Voicecord
 {
@@ -21,6 +22,13 @@ namespace Voicecord
 
             builder.Services.AddScoped<IBaseRepository<ApplicationUser>, UserRepository>();
             builder.Services.AddScoped<IAccountService, AccountService>();
+
+            builder.Services.AddScoped<IBaseRepository<UserGroup>, GroupRepository>();
+            builder.Services.AddScoped<IGroupService, GroupService>();
+
+
+
+
             var connection = builder.Configuration.GetConnectionString("DefaultConnection");
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(connection));
