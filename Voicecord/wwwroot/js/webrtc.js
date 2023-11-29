@@ -42,6 +42,11 @@ connection.on("ReceiveAnswer", function (sdp, type) {
     
 });
 
+connection.on("GetConnectedUsers", function (users) {
+    console.log(users);
+
+});
+
 const servers = {
     iceServers: [
         {
@@ -67,6 +72,8 @@ connection.onclose(async () => {
 
 
 const pc = new RTCPeerConnection(servers);
+//let pc_dict = new Map();
+//pc_dict.set('stirk', new RTCPeerConnection(servers));
 
 pc.oniceconnectionstatechange = (event) => {
     console.log('ICE connection state change:', pc.iceConnectionState);
@@ -88,6 +95,9 @@ const hangupButton = document.getElementById('hangupButton');
 webcamButton.onclick = async () => {
     localStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
     remoteStream = new MediaStream();
+
+    await connection.invoke("NewConnection", 'stirk');
+    await connection.invoke("GetConnectedUsers");
 
     localStream.getTracks().forEach((track) => {
         pc.addTrack(track, localStream);
