@@ -1,15 +1,5 @@
-﻿using Humanizer;
-using Microsoft.AspNetCore.SignalR;
-using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.SignalR;
 using System.Diagnostics;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
-using Voicecord.Domain.ViewModels.Account;
-using Voicecord.Interfaces;
-using Voicecord.Domain.ViewModels.Group;
 using System.Collections.Concurrent;
 
 namespace Voicecord.Hubs
@@ -22,11 +12,16 @@ namespace Voicecord.Hubs
         {
             connectedUsers.TryAdd(user, Context.ConnectionId);
         }
+        public override async Task OnDisconnectedAsync(Exception? exception)
+        {
+            var item = connectedUsers.First(kvp => kvp.Value == Context.ConnectionId);
+            connectedUsers.TryRemove(item);
+        }
 
         public async Task GetConnectedUsers()
         {
             Console.WriteLine(connectedUsers.Count);
-            await Clients.All.SendAsync("GetConnectedUsers", connectedUsers.Keys);
+            await Clients.Caller.SendAsync("GetConnectedUsers", connectedUsers.Keys);
         }
     
         public async Task SendMessage(string user, string message)
@@ -34,23 +29,25 @@ namespace Voicecord.Hubs
             await Clients.All.SendAsync("ReceiveMessage", user, message);
         }
 
-        public async Task SendOfferCandidates(string candidate, int sdpMLineIndex, string sdpMid, string usernameFragment)
+        public async Task SendOfferCandidates(string user, string user_to, string candidate, int sdpMLineIndex, string sdpMid, string usernameFragment)
         {
-            await Clients.Others.SendAsync("ReceiveOfferCandidates", candidate, sdpMLineIndex, sdpMid, usernameFragment);
-        }
-        public async Task SendAnswerCandidates(string candidate, int sdpMLineIndex, string sdpMid, string usernameFragment)
-        {
-            await Clients.Others.SendAsync("ReceiveAnswerCandidates", candidate, sdpMLineIndex, sdpMid, usernameFragment);
+            await Clients.Client(connectedUsers[user_to]).SendAsync("ReceiveOfferCandidates", user, candidate, sdpMLineIndex, sdpMid, usernameFragment);
         }
 
-        public async Task SendOffer(string sdp, string type)
+        public async Task SendAnswerCandidates(string user, string user_to, string candidate, int sdpMLineIndex, string sdpMid, string usernameFragment)
         {
-            await Clients.Others.SendAsync("ReceiveOffer", sdp, type);
+            await Clients.Client(connectedUsers[user_to]).SendAsync("ReceiveAnswerCandidates", user, candidate, sdpMLineIndex, sdpMid, usernameFragment);
         }
 
-        public async Task SendAnswer(string sdp, string type)
+        public async Task SendOffer(string user, string user_to, string sdp, string type)
         {
-            await Clients.Others.SendAsync("ReceiveAnswer", sdp, type);
+            await Clients.Client(connectedUsers[user_to]).SendAsync("ReceiveOffer", user, sdp, type);
+        }
+
+        public async Task SendAnswer(string user, string user_to, string sdp, string type)
+        {
+            Trace.WriteLine(connectedUsers);
+            await Clients.Client(connectedUsers[user_to]).SendAsync("ReceiveAnswer", user, sdp, type);
         }
     }
 }
