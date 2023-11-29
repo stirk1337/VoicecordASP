@@ -71,8 +71,8 @@ namespace Voicecord.Services
                 group = new UserGroup()
                 {
                     Name = model.NameGroup,
-                    Chats = new List<Chat>(),
-                    Voices = new List<VoiceChat>(),
+                    Chats = new List<Chat>() { new Chat() { Messages=new List<Message>()} },
+                    Voices = new List<VoiceChat>() { new VoiceChat() },
                     LinkImageGroup = model.GroupLink,
                     Users = new List<ApplicationUser>() { user }
                 };
@@ -95,7 +95,13 @@ namespace Voicecord.Services
             }
         }
 
-        public async Task<List<UserGroup>> GetGroup(string UserName)
+        public async Task<UserGroup> GetGroup(int groupId)
+        {
+            var group = await groupRepository.GetAll().Include(x=>x.Users).Include(x=>x.Voices).Include(x=>x.Chats).Where(x=>x.Id==groupId).FirstAsync();
+            return group;
+        }
+
+        public async Task<List<UserGroup>> GetGroups(string UserName)
         {
             var groups = await groupRepository
                 .GetAll()

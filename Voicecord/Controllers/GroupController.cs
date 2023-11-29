@@ -38,9 +38,9 @@ namespace Voicecord.Controllers
             return View(model);
         }
         [HttpGet]
-        public IActionResult GetGroup()
+        public IActionResult GetGroups()
         {
-            return View(groupService.GetGroup(User.Identity.Name).Result);
+            return View(groupService.GetGroups(User.Identity.Name).Result);
         }
 
         [HttpGet]
@@ -58,8 +58,12 @@ namespace Voicecord.Controllers
             
             return View(model);
         }
-   
-
+        [HttpGet]
+        public async Task<IActionResult> GetGroup(int id)
+        {
+            var group = await groupService.GetGroup(id);
+            return View(group);
+        }
 
     }
 }

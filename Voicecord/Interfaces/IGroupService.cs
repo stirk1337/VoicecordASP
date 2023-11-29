@@ -10,7 +10,8 @@ namespace Voicecord.Interfaces
     {
         Task<BaseResponse<bool>> CreateGroup(CreateGroupViewModel model, string CreatorName);
         Task<BaseResponse<bool>> AddToGroup(string groupLink, string userName);
-        Task<List<UserGroup>> GetGroup(string UserName);
+        Task<List<UserGroup>> GetGroups(string UserName);
+        Task<UserGroup> GetGroup(int groupId);
 
 
     }
