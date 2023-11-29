@@ -26,12 +26,8 @@ namespace Voicecord.Controllers
         [HttpPost]
         public IActionResult CreateUserGroup()
         {
-
-
             return View();
         }
-
-
 
         public IActionResult Index()
         {

@@ -37,5 +37,29 @@ namespace Voicecord.Controllers
             }
             return View(model);
         }
+        [HttpGet]
+        public IActionResult GetGroup()
+        {
+            return View(groupService.GetGroup(User.Identity.Name).Result);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> AddToGroup(AddToGroupViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var response = await groupService.AddToGroup(model.GroupLink, User.Identity.Name);
+                if (response.StatusCode == Domain.Enum.StatusCode.OK)
+                {
+                    return RedirectToAction("GetGroup", "Group");
+                }
+                ModelState.AddModelError("", response.Description);
+            }
+            
+            return View(model);
+        }
+   
+
+
     }
 }
