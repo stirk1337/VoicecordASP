@@ -51,7 +51,7 @@ namespace Voicecord.Controllers
                 var response = await groupService.AddToGroup(model.GroupLink, User.Identity.Name);
                 if (response.StatusCode == Domain.Enum.StatusCode.OK)
                 {
-                    return RedirectToAction("GetGroup", "Group");
+                    return RedirectToAction("GetGroups", "Group");
                 }
                 ModelState.AddModelError("", response.Description);
             }
