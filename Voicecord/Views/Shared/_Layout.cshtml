@@ -38,7 +38,7 @@
                         
                        @if (User.Identity.IsAuthenticated)
                         {
-                            <p>@User.Identity.Name</p>
+                            <p id="username-header">@User.Identity.Name</p>
 
                             <form method="post" asp-controller="Account" asp-action="Logout">
                                 <input class="" nav-link text-dark" type="submit" value="Выход" />

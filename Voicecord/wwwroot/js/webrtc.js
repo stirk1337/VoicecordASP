@@ -96,7 +96,8 @@ webcamButton.onclick = async () => {
     localStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
     remoteStream = new MediaStream();
 
-    await connection.invoke("NewConnection", 'stirk');
+    var user = document.getElementById("username-header").textContent;
+    await connection.invoke("NewConnection", user);
     await connection.invoke("GetConnectedUsers");
 
     localStream.getTracks().forEach((track) => {
