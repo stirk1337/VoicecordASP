@@ -30,7 +30,6 @@ namespace Voicecord.Controllers
                 var response = await groupService.CreateGroup(model, User.Identity.Name);
                 if (response.StatusCode == Domain.Enum.StatusCode.OK)
                 {
-                    //await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,new ClaimsPrincipal(response.Data));
                     return RedirectToAction("Index", "Home");
                 }
                 ModelState.AddModelError("", response.Description);

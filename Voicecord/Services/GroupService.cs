@@ -22,8 +22,8 @@ namespace Voicecord.Services
     {
         private readonly IBaseRepository<UserGroup> groupRepository;
         private readonly IBaseRepository<ApplicationUser> userRepository;
-        
-        
+
+
         private readonly ILogger<AccountService> logger;
         public GroupService(IBaseRepository<UserGroup> groupRepository, IBaseRepository<ApplicationUser> userRepository,
             ILogger<AccountService> logger)
@@ -35,8 +35,8 @@ namespace Voicecord.Services
 
         public async Task<BaseResponse<bool>> AddToGroup(string groupLink, string userName)
         {
-            var group=await groupRepository.GetAll().Include(x=>x.Users).FirstOrDefaultAsync(x=>x.LinkImageGroup==groupLink);
-            if (group==null)
+            var group = await groupRepository.GetAll().Include(x => x.Users).FirstOrDefaultAsync(x => x.LinkImageGroup == groupLink);
+            if (group == null)
             {
                 return new BaseResponse<bool>()
                 {
@@ -57,7 +57,7 @@ namespace Voicecord.Services
         public async Task<BaseResponse<bool>> CreateGroup(CreateGroupViewModel model, string creatorName)
         {
             try
-            {        
+            {
                 var group = await groupRepository.GetAll().FirstOrDefaultAsync(x => x.LinkImageGroup == model.GroupLink);
                 if (group != null)
                 {
@@ -67,16 +67,7 @@ namespace Voicecord.Services
                     };
                 }
 
-                var user = userRepository.GetAll().FirstOrDefaultAsync(x => x.UserName == creatorName).Result;
-                group = new UserGroup()
-                {
-                    Name = model.NameGroup,
-                    Chats = new List<Chat>() { new Chat() { Messages=new List<Message>()} },
-                    Voices = new List<VoiceChat>() { new VoiceChat() },
-                    LinkImageGroup = model.GroupLink,
-                    Users = new List<ApplicationUser>() { user }
-                };
-                await groupRepository.Create(group);
+                await AddGroupToDatabase(model, creatorName);
                 return new BaseResponse<bool>()
                 {
                     Data = true,
@@ -95,9 +86,24 @@ namespace Voicecord.Services
             }
         }
 
+        private async Task AddGroupToDatabase(CreateGroupViewModel model, string creatorName)
+        {
+            UserGroup group;
+            var user = userRepository.GetAll().FirstOrDefaultAsync(x => x.UserName == creatorName).Result;
+            group = new UserGroup()
+            {
+                Name = model.NameGroup,
+                Chats = new List<Chat>() { new Chat() { Messages = new List<Message>() } },
+                Voices = new List<VoiceChat>() { new VoiceChat() },
+                LinkImageGroup = model.GroupLink,
+                Users = new List<ApplicationUser>() { user }
+            };
+            await groupRepository.Create(group);
+        }
+
         public async Task<UserGroup> GetGroup(int groupId)
         {
-            var group = await groupRepository.GetAll().Include(x=>x.Users).Include(x=>x.Voices).Include(x=>x.Chats).Where(x=>x.Id==groupId).FirstAsync();
+            var group = await groupRepository.GetAll().Include(x => x.Users).Include(x => x.Voices).Include(x => x.Chats).Where(x => x.Id == groupId).FirstAsync();
             return group;
         }
 
@@ -106,7 +112,7 @@ namespace Voicecord.Services
             var groups = await groupRepository
                 .GetAll()
                 .Where(x => x.Users
-                .Select(x=>x.UserName)
+                .Select(x => x.UserName)
                 .Contains(UserName)).ToListAsync();
             return groups;
         }
