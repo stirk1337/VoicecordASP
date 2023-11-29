@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
 using NuGet.Versioning;
 using System.Security.Claims;
@@ -75,6 +76,17 @@ namespace Voicecord.Services
             }
         }
 
-         
+        public async Task<List<UserGroup>> GetGroup(string UserName)
+        {
+            var groups = await groupRepository
+                .GetAll()
+                .Where(x => x.Users
+                .Select(x=>x.UserName)
+                .Contains(UserName)).ToListAsync();
+            return groups;
+           
+        }
+
+
     }
 }

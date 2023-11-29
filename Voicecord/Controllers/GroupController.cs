@@ -37,5 +37,10 @@ namespace Voicecord.Controllers
             }
             return View(model);
         }
+        [HttpGet]
+        public IActionResult GetGroup()
+        {
+            return View(groupService.GetGroup(User.Identity.Name).Result);
+        }
     }
 }
