@@ -2,38 +2,21 @@
     ViewData["Title"] = "Privacy Policy";
 }
 
-<p>Voicecord© 2023</p>
 <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>WebRTC Demo</title>
 </head>
 <body>
-    <h2>1. Start your Webcam</h2>
     <div class="videos">
         <span>
-            <h3>Local Stream</h3>
-            <video id="webcamVideo" autoplay playsinline></video>
-        </span>
-        <span>
-            <h3>Remote Stream</h3>
-            <video id="remoteVideo" autoplay playsinline></video>
+            <h3>@User.Identity.Name</h3>
+            <video id="webcamVideo" autoplay playsinline width="750" height="340"></video>
         </span>
     </div>
-    <button id="webcamButton">Start webcam</button>
-    <h2>2. Create a new Call</h2>
-    <button id="callButton" disabled>Create Call (offer)</button>
+    <button id="callButton">Вступить в звонок</button>
 
-    <h2>3. Join a Call</h2>
-    <p>Answer the call from a different browser window or device</p>
-
-    <input id="callInput" />
-    <button id="answerButton" disabled>Answer</button>
-
-    <h2>4. Hangup</h2>
-
-    <button id="hangupButton" disabled>Hangup</button>
+    <button id="hangupButton">Отключиться</button>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/6.0.1/signalr.js"></script>
     <script src="~/js/webrtc.js"></script>

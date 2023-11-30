@@ -14,8 +14,13 @@ namespace Voicecord.Hubs
         }
         public override async Task OnDisconnectedAsync(Exception? exception)
         {
-            var item = connectedUsers.First(kvp => kvp.Value == Context.ConnectionId);
-            connectedUsers.TryRemove(item);
+            try
+            {
+                var item = connectedUsers.First(kvp => kvp.Value == Context.ConnectionId);
+                connectedUsers.TryRemove(item);
+                await Clients.All.SendAsync("UserDisconnected", item.Key);
+            }
+            catch { }
         }
 
         public async Task GetConnectedUsers()
@@ -46,7 +51,6 @@ namespace Voicecord.Hubs
 
         public async Task SendAnswer(string user, string user_to, string sdp, string type)
         {
-            Trace.WriteLine(connectedUsers);
             await Clients.Client(connectedUsers[user_to]).SendAsync("ReceiveAnswer", user, sdp, type);
         }
     }
