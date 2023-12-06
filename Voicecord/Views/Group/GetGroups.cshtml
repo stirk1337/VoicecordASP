@@ -6,13 +6,6 @@
 
 <h1>GetGroup</h1>
 
-
-
-
-
-<p>
-    <input asp-action="AddToGroup">Create New</input>
-</p>
 <table class="table">
     <thead>
         <tr>
@@ -26,6 +19,7 @@
         </tr>
     </thead>
     <tbody>
+        <a href="/Group/CreateGroup/">Создать канал</a>
         @foreach (var item in Model)
         {
             <tr>
@@ -36,9 +30,7 @@
                     @Html.DisplayFor(modelItem => item.LinkImageGroup) @item.Id
                 </td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                    <a asp-action="GetGroup" asp-route-id="@item.Id">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    <a asp-action="GetGroup" asp-route-id="@item.Id">Details</a>
                 </td>
             </tr>
         }

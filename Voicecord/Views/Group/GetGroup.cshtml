@@ -4,11 +4,9 @@
     ViewData["Title"] = "GetGroup";
 }
 
-<h1>GetGroup</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+
+
 <table class="table">
     <thead>
         <tr>
@@ -22,7 +20,7 @@
         </tr>
     </thead>
     <tbody>
- 
+
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => Model.Name)
@@ -33,29 +31,54 @@
             <li>
                 @foreach (var voice in @Model.Voices)
                 {
-                    <p>voicechat</p>
+                    <p>@voice.Id</p>
+                    if (voice.Users == null)
+                    {
+                        continue;
+                    }
+                    foreach (var userInVoiceChat in voice.Users)
+                    {
+                    <li>@userInVoiceChat</li>
+                    }
                 }
             </li>
             <li>
-                @foreach (var voice in @Model.Chats)
+                @foreach (var chat in @Model.Chats)
                 {
-                    <p>chat</p>
+                    if (chat.Messages != null)
+                        @foreach (var message in chat.Messages)
+                        {
+                        <li>
+                            <p>@message.Owner    @message.Date.ToString()</p>
+                            <p>@message.TextMessage</p>
+                        </li>
+                        }
+                <div class="text-center">
+                    <div class="container">
+                        <p id="username"> @User.Identity.Name</p>
+                        <div class="mt-5">
+                            <input type="text" id="message" />
+                            <input type="button" id="SendMessage" value="Send" />
+                        </div>
+                    </div>
+                    <div class="mt-3">
+                        <ul id="discussion"></ul>
+
+                    </div>
+
+
+                </div>
                 }
             </li>
             <p>Users</p>
-          
-                @foreach(var user in Model.Users)
-                    {<li>@user.UserName</li>}
-                
- 
-            <td>
-                <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@Model.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@Model.Id">Delete</a>
-            </td>
 
+            @foreach (var user in Model.Users)
+            {
+                <li>@user.UserName</li>
+            }
 
-
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/6.0.1/signalr.js"></script>
+            <script src="~/js/site.js"></script>
         </tr>
     </tbody>
 </table>

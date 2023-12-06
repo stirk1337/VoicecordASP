@@ -1,4 +1,5 @@
-﻿var connection = new signalR.HubConnectionBuilder().withUrl("/chat").build();
+﻿
+var connection = new signalR.HubConnectionBuilder().withUrl("/chat").build();
 
 async function start() {
     try {
@@ -15,7 +16,7 @@ connection.onclose(async () => {
 });
 
 document.getElementById("SendMessage").addEventListener("click", function (event) {
-    var user = document.getElementById("username").textContent;
+    var user =  document.getElementById("username").textContent;
     var message = document.getElementById("message").value;
     connection.invoke("SendMessage", user, message);
     event.preventDefault();
