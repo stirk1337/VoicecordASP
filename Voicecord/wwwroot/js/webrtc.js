@@ -172,8 +172,11 @@ callButton.onclick = async () => {
     console.log(pc_dict);
     localStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
     webcamVideo.srcObject = localStream;
+    var groupField = document.getElementById('groupField');
+    var group_id = groupField.value;
+    console.log('group_name', group_id);
 
-    await connection.invoke("NewConnection", current_user);
+    await connection.invoke("NewConnection", group_id);
     await connection.invoke("GetConnectedUsers");
 
 
