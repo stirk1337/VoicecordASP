@@ -72,11 +72,11 @@ namespace Voicecord.Hubs
             logger.LogInformation("Connected users: " + groupsConnectedUsers[group].Count.ToString());
             await Clients.Caller.SendAsync("GetConnectedUsers", groupsConnectedUsers[group].Keys);
         }
-    
-        public async Task SendMessage(string user, string message, string linkGroup, string chatId)
+
+        public async Task SendMessage(string message, string linkGroup, string chatId)
         {
-            await groupService.AddMessageToDatabase(linkGroup, message, user, int.Parse(chatId));
-            await Clients.Group(userGroups[user]).SendAsync("ReceiveMessage", user, message);
+            await groupService.AddMessageToDatabase(linkGroup, message, Context.User.Identity.Name, int.Parse(chatId));
+            await Clients.Group(userGroups[Context.User.Identity.Name]).SendAsync("ReceiveMessage", Context.User.Identity.Name, message);
         }
 
         public async Task SendOfferCandidates(string user, string user_to, string candidate, int sdpMLineIndex, string sdpMid, string usernameFragment)

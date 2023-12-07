@@ -33,6 +33,41 @@ namespace Voicecord.Services
             this.logger = logger;
         }
 
+        public async Task<BaseResponse<bool>> CreateTextChat(CreateTextChatViewModel model, string CreatorName)
+        {
+            try
+            {
+                var group = await groupRepository.GetAll().Include(x => x.Chats).ThenInclude(x=>x.Messages).FirstOrDefaultAsync(x => x.Id== model.GroupLink);
+                if (group == null)
+                {
+                    return new BaseResponse<bool>()
+                    {
+                        Description = "Неверный сервер",
+                    };
+                }
+                var user = userRepository.GetAll().FirstOrDefaultAsync(x => x.UserName == CreatorName).Result;
+
+                group.Chats.Add(new Chat() { Name = model.NameGroup, Messages = new List<Message>() { new Message() { Date = DateTime.Now, Owner = user, TextMessage = "Создал новый чат" } } });
+
+                await groupRepository.Update(group);
+                return new BaseResponse<bool>()
+                {
+                    Data = true,
+                    Description = "Сервер добавился",
+                    StatusCode = StatusCode.OK
+                };
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, $"[CreateTextChat]: {ex.Message}");
+                return new BaseResponse<bool>()
+                {
+                    Description = ex.Message,
+                    StatusCode = StatusCode.InternalServerError
+                };
+            }
+        }
+
         public async Task<BaseResponse<bool>> AddToGroup(string groupLink, string userName)
         {
             var group = await groupRepository.GetAll().Include(x => x.Users).FirstOrDefaultAsync(x => x.LinkImageGroup == groupLink);
@@ -87,15 +122,11 @@ namespace Voicecord.Services
         }
         public async Task AddMessageToDatabase(string linkGroup,string message, string creatorMessage,int chatId)
         {
-            var group= await groupRepository.GetAll().Include(x=>x.Chats).Include(x=>x.Users).Where(x => x.LinkImageGroup == linkGroup).FirstOrDefaultAsync();
+            var group= await groupRepository.GetAll().Include(x=>x.Chats).ThenInclude(x=>x.Messages).Include(x=>x.Users).Where(x => x.LinkImageGroup == linkGroup).FirstOrDefaultAsync();
             var user = userRepository.GetAll().Where(x => x.UserName == creatorMessage).FirstOrDefaultAsync().Result;
             if (user != null)
-            {
-
-                if (group.Chats.First(x => x.Id == chatId).Messages is null)
-                    group.Chats.First(x => x.Id == chatId).Messages = new List<Message> { new() { Date = DateTime.Now, Owner = user, TextMessage = message } };
-                else 
-                    group.Chats.First(x => x.Id == chatId).Messages.Add(new Message(){Date = DateTime.Now,Owner = user, TextMessage = message});
+            { 
+                group.Chats.First(x => x.Id == chatId).Messages.Add(new Message(){Date = DateTime.Now,Owner = user, TextMessage = message});
             }
             await groupRepository.Update(group);
         }
@@ -108,7 +139,7 @@ namespace Voicecord.Services
             group = new UserGroup()
             {
                 Name = model.NameGroup,
-                Chats = new List<Chat>() { new Chat() { Messages = new List<Message>() } },
+                Chats = new List<Chat>() { new Chat() { Messages = new List<Message>(),Name="first chat" } },
                 Voices = new List<VoiceChat>() { new VoiceChat() },
                 LinkImageGroup = model.GroupLink,
                 Users = new List<ApplicationUser>() { user }
@@ -136,5 +167,6 @@ namespace Voicecord.Services
                 .Contains(UserName)).ToListAsync();
             return groups;
         }
+
     }
 }

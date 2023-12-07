@@ -9,6 +9,7 @@ namespace Voicecord.Interfaces
     public interface IGroupService
     {
         Task<BaseResponse<bool>> CreateGroup(CreateGroupViewModel model, string CreatorName);
+        Task<BaseResponse<bool>> CreateTextChat(CreateTextChatViewModel model, string CreatorName);
         Task<BaseResponse<bool>> AddToGroup(string groupLink, string userName);
         Task<List<UserGroup>> GetGroups(string UserName);
         Task<UserGroup> GetGroup(int groupId);

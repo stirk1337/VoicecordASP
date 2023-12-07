@@ -1,14 +1,15 @@
 ﻿var connection = new signalR.HubConnectionBuilder().withUrl("/chat").build();
 
+var chatId = document.getElementById("tab-0").textContent;
+
 document.getElementById("SendMessage").addEventListener("click", function (event) {
-    var user = document.getElementById("username").textContent;
+  
     var message = document.getElementById("message").value;
     console.log(message);
-    var chatId = document.getElementById("chatId").textContent;
     console.log(chatId);
     var linkGroup = document.getElementById("linkGroup").textContent;
     console.log(linkGroup);
-    connection.invoke("SendMessage", user, message, linkGroup, chatId);
+    connection.invoke("SendMessage", message, linkGroup, chatId);
     event.preventDefault();
     console.log('Message sended');
 
@@ -21,12 +22,18 @@ connection.on("ReceiveMessage", function (user, message) {
 });
 
 
+async function change_chat(chat) {
+    await connection.invoke("NewConnection", chat);
+}
 
 async function start() {
     try {
         await connection.start();
+        var chat = document.getElementById("tab-0").textContent;
+        await connection.invoke("NewConnection", chat);
         console.log("SignalR Connected.");
-        await connection.invoke("NewConnection", document.getElementById("chatId").textContent);
+
+
     } catch (err) {
         console.log(err);
         setTimeout(start, 5000);
