@@ -121,7 +121,7 @@ namespace Voicecord.Services
             var group = await groupRepository.GetAll()
                 .Include(x => x.Users)
                 .Include(x => x.Voices)
-                .Include(x => x.Chats)
+                .Include(x => x.Chats).ThenInclude(x=>x.Messages)
                 .Where(x => x.Id == groupId)
                 .FirstAsync();
             return group;

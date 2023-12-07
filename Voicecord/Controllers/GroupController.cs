@@ -30,7 +30,7 @@ namespace Voicecord.Controllers
                 var response = await groupService.CreateGroup(model, User.Identity.Name);
                 if (response.StatusCode == Domain.Enum.StatusCode.OK)
                 {
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("GetGroups", "Group");
                 }
                 ModelState.AddModelError("", response.Description);
             }
@@ -43,6 +43,12 @@ namespace Voicecord.Controllers
         }
 
         [HttpGet]
+        public async Task<IActionResult> AddToGroup()
+        {
+            return View();
+        }
+
+        [HttpPost]
         public async Task<IActionResult> AddToGroup(AddToGroupViewModel model)
         {
             if (ModelState.IsValid)
@@ -54,9 +60,15 @@ namespace Voicecord.Controllers
                 }
                 ModelState.AddModelError("", response.Description);
             }
-            
+
             return View(model);
         }
+        
+
+
+
+
+
         [HttpGet]
         public async Task<IActionResult> GetGroup(int id)
         {
