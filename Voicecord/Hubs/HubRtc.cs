@@ -43,6 +43,7 @@ namespace Voicecord.Hubs
             }
         }
 
+
         public override async Task OnDisconnectedAsync(Exception? exception)
         {
             var username = Context.User.Identity.Name;
@@ -75,7 +76,7 @@ namespace Voicecord.Hubs
         public async Task SendMessage(string user, string message, string linkGroup, string chatId)
         {
             await groupService.AddMessageToDatabase(linkGroup, message, user, int.Parse(chatId));
-            await Clients.All.SendAsync("ReceiveMessage", user, message);
+            await Clients.Group(userGroups[user]).SendAsync("ReceiveMessage", user, message);
         }
 
         public async Task SendOfferCandidates(string user, string user_to, string candidate, int sdpMLineIndex, string sdpMid, string usernameFragment)
