@@ -85,6 +85,21 @@ namespace Voicecord.Services
                 };
             }
         }
+        public async Task AddMessageToDatabase(string linkGroup,string message, string creatorMessage,int chatId)
+        {
+            var group= await groupRepository.GetAll().Include(x=>x.Chats).Include(x=>x.Users).Where(x => x.LinkImageGroup == linkGroup).FirstOrDefaultAsync();
+            var user = userRepository.GetAll().Where(x => x.UserName == creatorMessage).FirstOrDefaultAsync().Result;
+            if (user != null)
+            {
+
+                if (group.Chats.First(x => x.Id == chatId).Messages is null)
+                    group.Chats.First(x => x.Id == chatId).Messages = new List<Message> { new() { Date = DateTime.Now, Owner = user, TextMessage = message } };
+                else 
+                    group.Chats.First(x => x.Id == chatId).Messages.Add(new Message(){Date = DateTime.Now,Owner = user, TextMessage = message});
+            }
+            await groupRepository.Update(group);
+        }
+
 
         private async Task AddGroupToDatabase(CreateGroupViewModel model, string creatorName)
         {
@@ -103,7 +118,12 @@ namespace Voicecord.Services
 
         public async Task<UserGroup> GetGroup(int groupId)
         {
-            var group = await groupRepository.GetAll().Include(x => x.Users).Include(x => x.Voices).Include(x => x.Chats).Where(x => x.Id == groupId).FirstAsync();
+            var group = await groupRepository.GetAll()
+                .Include(x => x.Users)
+                .Include(x => x.Voices)
+                .Include(x => x.Chats)
+                .Where(x => x.Id == groupId)
+                .FirstAsync();
             return group;
         }
 

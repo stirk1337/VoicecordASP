@@ -28,6 +28,7 @@
             <td>
                 @Html.DisplayFor(modelItem => Model.LinkImageGroup)
             </td>
+           
             <li>
                 @foreach (var voice in @Model.Voices)
                 {
@@ -45,6 +46,7 @@
             <li>
                 @foreach (var chat in @Model.Chats)
                 {
+                    <p id="chatId">@chat.Id</p>
                     if (chat.Messages != null)
                         @foreach (var message in chat.Messages)
                         {
@@ -55,7 +57,7 @@
                         }
                 <div class="text-center">
                     <div class="container">
-                        <p id="username"> @User.Identity.Name</p>
+                        <p id="username">@User.Identity.Name</p>
                         <div class="mt-5">
                             <input type="text" id="message" />
                             <input type="button" id="SendMessage" value="Send" />
@@ -79,6 +81,7 @@
 
             <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/6.0.1/signalr.js"></script>
             <script src="~/js/site.js"></script>
+             <p id="linkGroup">@Model.LinkImageGroup</p>
         </tr>
     </tbody>
 </table>

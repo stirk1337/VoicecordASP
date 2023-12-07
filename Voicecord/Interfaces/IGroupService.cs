@@ -12,7 +12,6 @@ namespace Voicecord.Interfaces
         Task<BaseResponse<bool>> AddToGroup(string groupLink, string userName);
         Task<List<UserGroup>> GetGroups(string UserName);
         Task<UserGroup> GetGroup(int groupId);
-
-
+        Task AddMessageToDatabase(string linkGroup, string message, string creatorMessage, int chatId);
     }
 }

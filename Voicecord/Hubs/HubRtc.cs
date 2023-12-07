@@ -1,13 +1,19 @@
 ﻿using Microsoft.AspNetCore.SignalR;
 using System.Diagnostics;
 using System.Collections.Concurrent;
+using Voicecord.Interfaces;
 
 namespace Voicecord.Hubs
 {
     public class HubRtc : Hub
     {
         private static readonly ConcurrentDictionary<string, string> connectedUsers = new ConcurrentDictionary<string, string>();
+        private readonly IGroupService groupService;
 
+        public HubRtc(IGroupService groupService)
+        {
+            this.groupService = groupService;
+        }
         public async Task NewConnection(string user)
         {
             connectedUsers.TryAdd(user, Context.ConnectionId);
@@ -29,8 +35,9 @@ namespace Voicecord.Hubs
             await Clients.Caller.SendAsync("GetConnectedUsers", connectedUsers.Keys);
         }
     
-        public async Task SendMessage(string user, string message)
+        public async Task SendMessage(string user, string message,string linkGroup,string chatId)
         {
+            await groupService.AddMessageToDatabase(linkGroup, message, user, int.Parse(chatId));
             await Clients.All.SendAsync("ReceiveMessage", user, message);
         }
 

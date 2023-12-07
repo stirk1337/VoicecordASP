@@ -16,9 +16,14 @@ connection.onclose(async () => {
 });
 
 document.getElementById("SendMessage").addEventListener("click", function (event) {
-    var user =  document.getElementById("username").textContent;
+    var user = document.getElementById("username").textContent;
     var message = document.getElementById("message").value;
-    connection.invoke("SendMessage", user, message);
+    console.log(message);
+    var chatId = document.getElementById("chatId").textContent;
+    console.log(chatId);
+    var linkGroup = document.getElementById("linkGroup").textContent;
+    console.log(linkGroup);
+    connection.invoke("SendMessage", user, message,linkGroup,chatId );
     event.preventDefault();
     console.log('Message sended');
 
