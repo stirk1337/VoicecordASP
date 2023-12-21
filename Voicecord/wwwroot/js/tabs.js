@@ -1,7 +1,11 @@
-﻿let tab = function () {
+﻿ 
+
+let tab = function () {
     let tabNav = document.querySelectorAll('.tabs-nav__item'),
         tabContent = document.querySelectorAll('.tab'),
         tabName;
+
+
 
     tabNav.forEach(item => {
         item.addEventListener('click', selectTabNav)
@@ -18,11 +22,11 @@
         tabName = this.getAttribute('data-tab-name');
         var chat = document.getElementById(tabName).textContent;
         chatId = chat;
-        await change_chat(chatId);
+        //await change_chat(chatId);
         selectTabContent(tabName);
-
+        discussionId = tabName.replace("tab", "discussion");
         //document.getElementById("chatId").setAttribute("id","")*/
-        console.log(tabName)
+        
     }
 
     async function selectTabContent(tabName) {

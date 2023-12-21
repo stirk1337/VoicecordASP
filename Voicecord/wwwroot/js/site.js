@@ -1,7 +1,7 @@
 ﻿var connection = new signalR.HubConnectionBuilder().withUrl("/chat").build();
 
 var chatId = document.getElementById("tab-0").textContent;
-
+var discussionId = document.getElementById("discussion-0").id;
 document.getElementById("SendMessage").addEventListener("click", function (event) {
   
     var message = document.getElementById("message").value;
@@ -9,28 +9,44 @@ document.getElementById("SendMessage").addEventListener("click", function (event
     console.log(chatId);
     var linkGroup = document.getElementById("linkGroup").textContent;
     console.log(linkGroup);
-    connection.invoke("SendMessage", message, linkGroup, chatId);
+   
+    connection.invoke("SendMessage", message, linkGroup, chatId, discussionId);
     event.preventDefault();
     console.log('Message sended');
 
+
 });
-connection.on("ReceiveMessage", function (user, message) {
+connection.on("ReceiveMessage", function (user, message, disscusionId) {
+     
     var encodedMsg = user + ": " + message;
     var li = document.createElement("li");
     li.textContent = encodedMsg;
-    document.getElementById("discussion").appendChild(li);
+    console.log(disscusionId);
+    document.getElementById(disscusionId).appendChild(li);
+    console.log("appendChildNewMessage");
 });
 
 
 async function change_chat(chat) {
     await connection.invoke("NewConnection", chat);
+    
+ 
+}
+
+async function initialize_chats_connection() {
+    var chats_count = parseInt(document.getElementById("chats_count").textContent);
+    for (let i = 0; i < chats_count; i++) {
+        await connection.invoke("NewConnection", 'tab-' + i);
+        console.log('tab-' + i);
+    }
 }
 
 async function start() {
     try {
         await connection.start();
-        var chat = document.getElementById("tab-0").textContent;
-        await connection.invoke("NewConnection", chat);
+        //var chat = document.getElementById("tab-0").textContent;
+        //await connection.invoke("NewConnection", chat);
+        await initialize_chats_connection();
         console.log("SignalR Connected.");
 
 

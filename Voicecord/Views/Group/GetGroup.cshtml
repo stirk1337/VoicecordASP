@@ -53,7 +53,6 @@
                             <div class="tabs-nav__item" data-tab-name="tab-@i">@Model.Chats[i].Name</div>
                         }
                     </div>
-
                     <div class="tabs__content">
                         <div class="tab tab-0 is-active" data-tab-name="tab-0">
                             <p id="tab-0">@Model.Chats[0].Id</p>
@@ -66,8 +65,13 @@
                                     <p>@message.TextMessage</p>
                                 </li>
                             }
+                            <li>
+                                <ul id="discussion-0"></ul>
+                            </li> 
+                             
                            
                         </div>
+                        <p id="chats_count" hidden>@Model.Chats.Count</p>
                         @for (var i = 1; i < Model.Chats.Count; i++)
                         {
 
@@ -81,9 +85,15 @@
                                         <p>@message.TextMessage</p>
                                     </li>
                                 }
+                                <li>
+                                    <ul id="discussion-@i"></ul>
+                                </li> 
 
                             </div>
                         }
+                        <div class="mt-3">
+                            <ul id="discussion"></ul>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -93,11 +103,10 @@
                     <div class="mt-5">
                         <input type="text" id="message" />
                         <input type="button" id="SendMessage" value="Send" />
+
                     </div>
                 </div>
-                <div class="mt-3">
-                    <ul id="discussion"></ul>
-                </div>
+                
 
             </div>
 
