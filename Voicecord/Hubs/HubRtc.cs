@@ -55,7 +55,26 @@ namespace Voicecord.Hubs
                 var group = userGroups[username];
                 var item = groupsConnectedUsers[group].FirstOrDefault(kvp => kvp.Value == Context.ConnectionId);
                 groupsConnectedUsers[group].Remove(item.Key);
-                await Clients.OthersInGroup(group).SendAsync("UserDisconnected", item.Key);
+                await Clients.OthersInGroup(group).SendAsync("UserDisconnected", item.Key, group);
+            }
+            catch
+            {
+                logger.LogInformation("Exception in on disconnected");
+            }
+        }
+
+        public async Task VoiceDisconnectButton()
+        {
+            var username = Context.User.Identity.Name;
+            try
+            {
+                //var item = connectedUsers.FirstOrDefault(kvp => kvp.Value == Context.ConnectionId);
+                //connectedUsers.TryRemove(item);
+                //await Clients.All.SendAsync("UserDisconnected", item.Key);
+                var group = userGroups[username];
+                var item = groupsConnectedUsers[group].FirstOrDefault(kvp => kvp.Value == Context.ConnectionId);
+                groupsConnectedUsers[group].Remove(item.Key);
+                await Clients.OthersInGroup(group).SendAsync("UserDisconnected", item.Key, group);
             }
             catch
             {
@@ -70,7 +89,7 @@ namespace Voicecord.Hubs
             var username = Context.User.Identity.Name;
             var group = userGroups[username];
             logger.LogInformation("Connected users: " + groupsConnectedUsers[group].Count.ToString());
-            await Clients.Caller.SendAsync("GetConnectedUsers", groupsConnectedUsers[group].Keys);
+            await Clients.Caller.SendAsync("GetConnectedUsers", groupsConnectedUsers[group].Keys, group);
         }
 
         public async Task SendMessage(string message, string linkGroup, string chatId)
@@ -94,7 +113,7 @@ namespace Voicecord.Hubs
         public async Task SendOffer(string user, string user_to, string sdp, string type)
         {
             var group = userGroups[user];
-            await Clients.Client(groupsConnectedUsers[group][user_to]).SendAsync("ReceiveOffer", user, sdp, type);
+            await Clients.Client(groupsConnectedUsers[group][user_to]).SendAsync("ReceiveOffer", user, group, sdp, type);
         }
 
         public async Task SendAnswer(string user, string user_to, string sdp, string type)

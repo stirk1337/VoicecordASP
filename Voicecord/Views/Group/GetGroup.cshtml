@@ -28,12 +28,17 @@
                 @Html.DisplayFor(modelItem => Model.LinkImageGroup)
             </td>
 
-            <li>
-
                 @foreach (var voice in @Model.Voices)
-                {
-
-                    <p>voice @voice.Id</p>
+                {   
+                    <h4>Voice-@voice.Id</h4>
+                    <div class="voice-@voice.Id">
+                        <span>
+                            <h3 hidden id="user-name-@voice.Id">@User.Identity.Name</h3>
+                            <video id="webcamVideo-@voice.Id" autoplay playsinline width="750" height="340" hidden></video>
+                        </span>
+                    </div>
+                    <button id="callButton-@voice.Id" onclick="initialize_voice_chat(@voice.Id)">Вступить в звонок</button>
+                    <button id="hangupButton-@voice.Id" hidden onClick="disconnect_button(@voice.Id);">Отключиться</button> 
                     if (voice.Users == null)
                     {
                         continue;
@@ -43,7 +48,7 @@
                     <li>@userInVoiceChat</li>
                     }
                 }
-            </li>
+
             <div class="wrapper">
                 <div class="tabs">
                     <div class="tabs__nav tabs-nav">
@@ -68,6 +73,7 @@
                             }
                            
                         </div>
+                        <p id="chat-count" hidden>@Model.Chats.Count</p>
                         @for (var i = 1; i < Model.Chats.Count; i++)
                         {
 

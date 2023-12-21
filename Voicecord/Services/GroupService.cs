@@ -140,7 +140,7 @@ namespace Voicecord.Services
             {
                 Name = model.NameGroup,
                 Chats = new List<Chat>() { new Chat() { Messages = new List<Message>(),Name="first chat" } },
-                Voices = new List<VoiceChat>() { new VoiceChat() },
+                Voices = new List<VoiceChat>() { new VoiceChat(), new VoiceChat() },
                 LinkImageGroup = model.GroupLink,
                 Users = new List<ApplicationUser>() { user }
             };
