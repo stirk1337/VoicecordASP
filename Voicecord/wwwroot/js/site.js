@@ -16,12 +16,15 @@ document.getElementById("SendMessage").addEventListener("click", function (event
 
 
 });
-connection.on("ReceiveMessage", function (user, message, disscusionId) {
+connection.on("ReceiveMessage", function (user, message, disscusionId,dateTime) {
      
-    var encodedMsg = user + ": " + message;
-    var li = document.createElement("li");
+    var encodedMsg =  user + ": " + message;
+    var li = document.createElement("p");
     li.textContent = encodedMsg;
     console.log(disscusionId);
+    var li2 = document.createElement("li");
+    li2.textContent = dateTime;
+    document.getElementById(disscusionId).appendChild(li2);
     document.getElementById(disscusionId).appendChild(li);
     console.log("appendChildNewMessage");
 });
