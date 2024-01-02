@@ -62,7 +62,7 @@ namespace Voicecord.Hubs
                 groupsConnectedUsers[group].Remove(item.Key);
                 await Clients.OthersInGroup(group).SendAsync("UserDisconnected", item.Key, group);
                 await SendUsersVoiceChat(groupsConnectedUsers);
-                await base.OnDisconnectedAsync(exception);
+                //await base.OnDisconnectedAsync(exception);
 
             }
             catch
@@ -115,7 +115,8 @@ namespace Voicecord.Hubs
             await Clients.All.SendAsync("JSmethod", groupsConnectedUsers);
         }
 
-        public async Task SendMessage(string message, string linkGroup, string? chatId,string disscusionId)
+        public async Task SendMessage(string message, string linkGroup, string? chatId, string disscusionId)
+
         {
             await groupService.AddMessageToDatabase(linkGroup, message, Context.User.Identity.Name, int.Parse(chatId));
             await Clients.Group(userGroups[Context.User.Identity.Name]).SendAsync("ReceiveMessage", Context.User.Identity.Name, message, disscusionId, DateTime.Now.ToShortTimeString());
