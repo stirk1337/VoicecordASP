@@ -116,6 +116,7 @@ namespace Voicecord.Hubs
         }
 
         public async Task SendMessage(string message, string linkGroup, string? chatId, string disscusionId)
+
         {
             await groupService.AddMessageToDatabase(linkGroup, message, Context.User.Identity.Name, int.Parse(chatId));
             await Clients.Group(userGroups[Context.User.Identity.Name]).SendAsync("ReceiveMessage", Context.User.Identity.Name, message, disscusionId, DateTime.Now.ToShortTimeString());

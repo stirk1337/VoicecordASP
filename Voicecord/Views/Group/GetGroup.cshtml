@@ -29,8 +29,8 @@
             </td>
 
                 @foreach (var voice in @Model.Voices)
-                {   
-                    <h4>Voice-@voice.Id</h4>
+                {  
+                    <h4>@voice.Name</h4>
                     <div class="voice-@voice.Id">
                         <p>Пользователи в войс чате: </p>
                         <ul class="people-voice-@voice.Id">
@@ -113,6 +113,9 @@
 
 
             <a asp-action="CreateTextChat" asp-route-id="@Model.Id">Create text chat</a>
+                or
+
+            <a asp-action="CreateVoiceChat" asp-route-id="@Model.Id">Create voice chat</a>
             @* <div class="wrapper">
             <div class="tabs">
             <div class="tabs__nav tabs-nav">

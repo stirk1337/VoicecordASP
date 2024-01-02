@@ -32,6 +32,40 @@ namespace Voicecord.Services
             this.groupRepository = groupRepository;
             this.logger = logger;
         }
+        public async Task<BaseResponse<bool>> CreateVoiceChat(CreateTextChatViewModel model, string CreatorName)
+        {
+            try
+            {
+                var group = await groupRepository.GetAll().Include(x => x.Voices).FirstOrDefaultAsync(x => x.Id == model.GroupLink);
+                if (group == null)
+                {
+                    return new BaseResponse<bool>()
+                    {
+                        Description = "Неверный server",
+                    };
+                }
+                var user = userRepository.GetAll().FirstOrDefaultAsync(x => x.UserName == CreatorName).Result;
+
+                group.Voices.Add(new VoiceChat() {Name = model.NameGroup});
+
+                await groupRepository.Update(group);
+                return new BaseResponse<bool>()
+                {
+                    Data = true,
+                    Description = "Войсчат добавился",
+                    StatusCode = StatusCode.OK
+                };
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, $"[CreateTextChat]: {ex.Message}");
+                return new BaseResponse<bool>()
+                {
+                    Description = ex.Message,
+                    StatusCode = StatusCode.InternalServerError
+                };
+            }
+        }
 
         public async Task<BaseResponse<bool>> CreateTextChat(CreateTextChatViewModel model, string CreatorName)
         {
@@ -168,5 +202,6 @@ namespace Voicecord.Services
             return groups;
         }
 
+      
     }
 }
