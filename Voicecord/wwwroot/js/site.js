@@ -3,22 +3,22 @@
 var chatId = document.getElementById("tab-0").textContent;
 var discussionId = document.getElementById("discussion-0").id;
 document.getElementById("SendMessage").addEventListener("click", function (event) {
-  
+
     var message = document.getElementById("message").value;
     console.log(message);
     console.log(chatId);
     var linkGroup = document.getElementById("linkGroup").textContent;
     console.log(linkGroup);
-   
+
     connection.invoke("SendMessage", message, linkGroup, chatId, discussionId);
     event.preventDefault();
     console.log('Message sended');
 
 
 });
-connection.on("ReceiveMessage", function (user, message, disscusionId,dateTime) {
-     
-    var encodedMsg =  user + ": " + message;
+connection.on("ReceiveMessage", function (user, message, disscusionId, dateTime) {
+
+    var encodedMsg = user + ": " + message;
     var li = document.createElement("p");
     li.textContent = encodedMsg;
     console.log(disscusionId);
@@ -28,6 +28,37 @@ connection.on("ReceiveMessage", function (user, message, disscusionId,dateTime) 
     document.getElementById(disscusionId).appendChild(li);
     console.log("appendChildNewMessage");
 });
+
+connection.on("JSmethod", function (userConnectionVoiceChat) {
+    console.log(userConnectionVoiceChat);
+    //var video_people = document.querySelector('.' + people-voice_chat_id);
+    //while (video_people.firstChild) {
+    //    video_people.firstChild.remove()
+    //}
+    for (const [key, value] of Object.entries(userConnectionVoiceChat)) {
+        var voice_chat_id = key;
+        var video_people = document.querySelector('.' + 'people-' + voice_chat_id);
+        if (video_people == null) {
+            continue
+        }
+        var p = document.createElement("p");
+        p.textContent = "xd1337";
+        video_people.appendChild(p);
+        while (video_people.firstChild) {
+            video_people.firstChild.remove()
+        }
+        console.log(voice_chat_id);
+        for (const [key, value] of Object.entries(userConnectionVoiceChat[voice_chat_id])) {
+            var user = key;
+            var li = document.createElement("li");
+            li.textContent = user;
+            video_people.appendChild(li);
+        }
+    }
+
+})
+
+
 
 
 //async function change_chat(chat) {
@@ -169,7 +200,7 @@ function initializeRemoteStream(user, voice_chat_id) {
     var video_div = document.querySelector('.' + voice_chat_id);
     console.log('Video class:' + voice_chat_id)
     var spanElement = document.createElement("span");
-    spanElement.setAttribute("id", voice_chat_id + "-" +user);
+    spanElement.setAttribute("id", voice_chat_id + "-" + user);
     var h3Element = document.createElement("h3");
     h3Element.textContent = user;
     var videoElement = document.createElement("video");
@@ -291,7 +322,7 @@ async function disconnect_button(voice_chat_id) {
         var elem = document.getElementById('voice-' + voice_chat_id + "-" + key);
         elem.parentNode.removeChild(elem);
     }
-    
+
 }
 
 
