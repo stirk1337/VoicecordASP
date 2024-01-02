@@ -6,6 +6,7 @@ namespace Voicecord.Models
     {
         [Key]
         public int Id { get; set; }
+        public string Name {  get; set; }
         public List<ApplicationUser> Users { get; set; }
         public List<Candidate> OfferCandidates { get; set; }
         public List<Candidate> AnswerCandidates { get; set; }

@@ -29,6 +29,13 @@ connection.on("ReceiveMessage", function (user, message, disscusionId,dateTime) 
     console.log("appendChildNewMessage");
 });
 
+connection.on("JSmethod", function (userConnectionVoiceChat) {
+    console.log(userConnectionVoiceChat);
+    
+})
+
+
+
 
 //async function change_chat(chat) {
 //    await connection.invoke("NewConnection", chat);

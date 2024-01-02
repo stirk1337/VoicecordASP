@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Voicecord.Data;
 using Voicecord.Data.Repositories;
@@ -43,7 +44,15 @@ namespace Voicecord
                 });
             
 
-            builder.Services.AddSignalR();
+            builder.Services.AddSignalR(
+                hubOptions =>
+            {
+                hubOptions.ClientTimeoutInterval = TimeSpan.FromSeconds(3);
+                hubOptions.HandshakeTimeout = TimeSpan.FromSeconds(3);
+                hubOptions.KeepAliveInterval = TimeSpan.FromSeconds(3);
+                hubOptions.EnableDetailedErrors = true;
+            }
+            );
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.

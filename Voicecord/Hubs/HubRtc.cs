@@ -41,14 +41,19 @@ namespace Voicecord.Hubs
                     logger.LogInformation($"  User: {userEntry.Key}, Value: {userEntry.Value}");
                 }
             }
+
+            await SendUsersVoiceChat(groupsConnectedUsers);
         }
 
 
         public override async Task OnDisconnectedAsync(Exception? exception)
         {
+            Trace.WriteLine("Disconnected!!!");
+            logger.LogCritical("Disconnected!!!");
             var username = Context.User.Identity.Name;
             try
             {
+
                 //var item = connectedUsers.FirstOrDefault(kvp => kvp.Value == Context.ConnectionId);
                 //connectedUsers.TryRemove(item);
                 //await Clients.All.SendAsync("UserDisconnected", item.Key);
@@ -56,12 +61,19 @@ namespace Voicecord.Hubs
                 var item = groupsConnectedUsers[group].FirstOrDefault(kvp => kvp.Value == Context.ConnectionId);
                 groupsConnectedUsers[group].Remove(item.Key);
                 await Clients.OthersInGroup(group).SendAsync("UserDisconnected", item.Key, group);
+                await SendUsersVoiceChat(groupsConnectedUsers);
+                await base.OnDisconnectedAsync(exception);
+
             }
             catch
             {
                 logger.LogInformation("Exception in on disconnected");
             }
+
+
         }
+
+
 
         public async Task VoiceDisconnectButton()
         {
@@ -75,6 +87,9 @@ namespace Voicecord.Hubs
                 var item = groupsConnectedUsers[group].FirstOrDefault(kvp => kvp.Value == Context.ConnectionId);
                 groupsConnectedUsers[group].Remove(item.Key);
                 await Clients.OthersInGroup(group).SendAsync("UserDisconnected", item.Key, group);
+
+
+                await SendUsersVoiceChat(groupsConnectedUsers);
             }
             catch
             {
@@ -90,6 +105,14 @@ namespace Voicecord.Hubs
             var group = userGroups[username];
             logger.LogInformation("Connected users: " + groupsConnectedUsers[group].Count.ToString());
             await Clients.Caller.SendAsync("GetConnectedUsers", groupsConnectedUsers[group].Keys, group);
+        }
+
+        public async Task SendUsersVoiceChat(ConcurrentDictionary<string, Dictionary<string, string>> groupsConnectedUsers)
+        {
+            var username = Context.User.Identity.Name;
+            var group = userGroups[username];
+            //await Clients.Group(group).SendAsync("JSmethod", groupsConnectedUsers);
+            await Clients.All.SendAsync("JSmethod", groupsConnectedUsers);
         }
 
         public async Task SendMessage(string message, string linkGroup, string? chatId,string disscusionId)
