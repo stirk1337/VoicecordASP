@@ -1,4 +1,4 @@
-﻿namespace Voicecord.Domain.ViewModels.Group
+﻿namespace Voicecord.ViewModels.Group
 {
     public class EditGroupViewModel
     {

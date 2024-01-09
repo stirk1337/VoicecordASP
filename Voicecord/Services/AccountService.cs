@@ -3,31 +3,27 @@ using System.Collections.Generic;
 using System.Data;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using Voicecord.Domain.Response;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using NuGet.ContentModel;
 using static System.Runtime.InteropServices.JavaScript.JSType;
-using Voicecord.Domain.Enum;
 using System.Linq;
-using Voicecord.Domain.ViewModels.Account;
 using Voicecord.Helpers;
 using Voicecord.Interfaces;
 using Voicecord.Models;
 using Microsoft.AspNetCore.Identity;
+using Voicecord.Response;
+using Voicecord.ViewModels.Account;
 
 namespace Voicecord.Service.Implementations
 {
     public class AccountService : IAccountService
     {
-        //private readonly IBaseRepository<Profile> _proFileRepository;
         private readonly IBaseRepository<ApplicationUser> _userRepository;
-        //private readonly IBaseRepository<Basket> _basketRepository;
         private readonly ILogger<AccountService> _logger;
 
-
         public AccountService(IBaseRepository<ApplicationUser> userRepository,
-            ILogger<AccountService> logger )
+            ILogger<AccountService> logger)
         {
             _userRepository = userRepository;
             _logger = logger;
@@ -35,7 +31,6 @@ namespace Voicecord.Service.Implementations
 
         public async Task<BaseResponse<ClaimsIdentity>> Register(RegisterViewModel model)
         {
-            
             try
             {
                 var user = await _userRepository.GetAll().FirstOrDefaultAsync(x => x.UserName == model.Name);
@@ -50,24 +45,11 @@ namespace Voicecord.Service.Implementations
                 user = new ApplicationUser()
                 {
                     UserName = model.Name,
-                    Email= model.Email,
+                    Email = model.Email,
                     Password = HashPasswordHelper.HashPassword(model.Password),
                 };
 
                 await _userRepository.Create(user);
-
-                //var profile = new Profile()
-                //{
-                //    UserId = user.Id,
-                //};
-
-                //var basket = new Basket()
-                //{
-                //    UserId = user.Id
-                //};
-
-                //await _proFileRepository.Create(profile);
-                //await _basketRepository.Create(basket);
                 var result = Authenticate(user);
 
                 return new BaseResponse<ClaimsIdentity>()
@@ -165,11 +147,7 @@ namespace Voicecord.Service.Implementations
 
         private ClaimsIdentity Authenticate(ApplicationUser user)
         {
-            var claims = new List<Claim>
-            {
-                new Claim(ClaimsIdentity.DefaultNameClaimType,user.UserName),
-                //new Claim(ClaimsIdentity.DefaultRoleClaimType, user.Role.ToString())
-            };
+            var claims = new List<Claim> { new Claim(ClaimsIdentity.DefaultNameClaimType, user.UserName) };
             return new ClaimsIdentity(claims, "ApplicationCookie",
                 ClaimsIdentity.DefaultNameClaimType, ClaimsIdentity.DefaultRoleClaimType);
         }

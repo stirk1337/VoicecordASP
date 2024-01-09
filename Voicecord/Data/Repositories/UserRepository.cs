@@ -33,7 +33,6 @@ namespace Voicecord.Data.Repositories
         {
             _db.Users.Update(entity);
             await _db.SaveChangesAsync();
-
             return entity;
         }
     }

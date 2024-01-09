@@ -1,7 +1,7 @@
 ﻿using System.Security.Claims;
 using System.Threading.Tasks;
-using Voicecord.Domain.Response;
-using Voicecord.Domain.ViewModels.Account;
+using Voicecord.Response;
+using Voicecord.ViewModels.Account;
 
 namespace Voicecord.Interfaces
 {

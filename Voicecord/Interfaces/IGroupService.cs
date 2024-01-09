@@ -1,8 +1,8 @@
 ﻿using System.Security.Claims;
-using Voicecord.Domain.Response;
-using Voicecord.Domain.ViewModels.Account;
-using Voicecord.Domain.ViewModels.Group;
+using Voicecord.ViewModels.Account;
 using Voicecord.Models;
+using Voicecord.Response;
+using Voicecord.ViewModels.Group;
 
 namespace Voicecord.Interfaces
 {

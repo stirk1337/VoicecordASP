@@ -16,7 +16,7 @@ namespace Voicecord.Data.Repositories
         {
             return _db.Groups;
         }
- 
+
 
         public async Task Delete(UserGroup entity)
         {
@@ -34,7 +34,6 @@ namespace Voicecord.Data.Repositories
         {
             _db.Groups.Update(entity);
             await _db.SaveChangesAsync();
-
             return entity;
         }
     }

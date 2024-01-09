@@ -1,12 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Voicecord.Domain.ViewModels.Account
+namespace Voicecord.ViewModels.Account
 {
     public class ChangePasswordViewModel
     {
         [Required(ErrorMessage = "Укажите имя")]
         public string UserName { get; set; }
-        
+
         [Required(ErrorMessage = "Введите пароль")]
         [DataType(DataType.Password)]
         [Display(Name = "Пароль")]

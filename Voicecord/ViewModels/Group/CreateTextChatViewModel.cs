@@ -1,10 +1,8 @@
-﻿using Microsoft.AspNetCore.Identity;
-using System.ComponentModel.DataAnnotations;
-using Voicecord.Models;
+﻿using System.ComponentModel.DataAnnotations;
 
-namespace Voicecord.Domain.ViewModels.Group
+namespace Voicecord.ViewModels.Group
 {
-    public class CreateGroupViewModel
+    public class CreateTextChatViewModel
     {
         [Required(ErrorMessage = "Укажите имя")]
         [MaxLength(20, ErrorMessage = "Имя должно иметь длину меньше 20 символов")]
@@ -13,9 +11,8 @@ namespace Voicecord.Domain.ViewModels.Group
 
         [Required]
         public string CreatorId { get; set; }
+        [Required]
+        public int GroupLink { get; set; }
 
-
-        [Required(ErrorMessage = "Ссылка на сервер")]
-        public string GroupLink { get; set; }
     }
 }

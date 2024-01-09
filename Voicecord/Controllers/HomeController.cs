@@ -10,7 +10,7 @@ namespace Voicecord.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-       
+
 
         public HomeController(ILogger<HomeController> logger)
         {
@@ -31,7 +31,6 @@ namespace Voicecord.Controllers
 
         public IActionResult Index()
         {
-
             return View();
         }
 

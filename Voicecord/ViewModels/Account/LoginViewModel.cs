@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Voicecord.Domain.ViewModels.Account
+namespace Voicecord.ViewModels.Account
 {
     public class LoginViewModel
     {

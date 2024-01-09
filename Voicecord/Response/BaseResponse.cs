@@ -1,13 +1,11 @@
-﻿using Voicecord.Domain.Enum;
-
-namespace Voicecord.Domain.Response
+﻿namespace Voicecord.Response
 {
     public class BaseResponse<T> : IBaseResponse<T>
     {
-        public string Description { get; set; }        
+        public string Description { get; set; }
 
         public StatusCode StatusCode { get; set; }
-        
+
         public T Data { get; set; }
     }
 
@@ -15,5 +13,5 @@ namespace Voicecord.Domain.Response
     {
         StatusCode StatusCode { get; }
         T Data { get; }
-    } 
+    }
 }

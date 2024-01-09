@@ -2,10 +2,10 @@
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
-using Voicecord.Domain.ViewModels.Account;
+using Voicecord.ViewModels.Account;
 using Voicecord.Interfaces;
-using Voicecord.Domain.ViewModels.Group;
 using Microsoft.AspNetCore.Authorization;
+using Voicecord.ViewModels.Group;
 
 namespace Voicecord.Controllers
 {
@@ -28,7 +28,7 @@ namespace Voicecord.Controllers
             if (ModelState.IsValid)
             {
                 var response = await groupService.CreateGroup(model, User.Identity.Name);
-                if (response.StatusCode == Domain.Enum.StatusCode.OK)
+                if (response.StatusCode == Voicecord.Response.StatusCode.OK)
                 {
                     return RedirectToAction("GetGroups", "Group");
                 }
@@ -43,7 +43,7 @@ namespace Voicecord.Controllers
             if (ModelState.IsValid)
             {
                 var response = await groupService.CreateTextChat(model, User.Identity.Name);
-                if (response.StatusCode == Domain.Enum.StatusCode.OK)
+                if (response.StatusCode == Voicecord.Response.StatusCode.OK)
                 {
                     return RedirectToAction("GetGroups", "Group");
                 }
@@ -70,7 +70,7 @@ namespace Voicecord.Controllers
             if (ModelState.IsValid)
             {
                 var response = await groupService.CreateVoiceChat(model, User.Identity.Name);
-                if (response.StatusCode == Domain.Enum.StatusCode.OK)
+                if (response.StatusCode == Voicecord.Response.StatusCode.OK)
                 {
                     return RedirectToAction("GetGroups", "Group");
                 }
@@ -108,16 +108,15 @@ namespace Voicecord.Controllers
             if (ModelState.IsValid)
             {
                 var response = await groupService.AddToGroup(model.GroupLink, User.Identity.Name);
-                if (response.StatusCode == Domain.Enum.StatusCode.OK)
-                { 
+                if (response.StatusCode == Voicecord.Response.StatusCode.OK)
+                {
                     return RedirectToAction("GetGroups", "Group");
                 }
                 ModelState.AddModelError("", response.Description);
             }
-
             return View(model);
         }
-        
+
 
         [HttpGet]
         public async Task<IActionResult> GetGroup(int id)

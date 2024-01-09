@@ -3,8 +3,8 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
-using Voicecord.Domain.ViewModels.Account;
 using Voicecord.Interfaces;
+using Voicecord.ViewModels.Account;
 
 namespace Voicecord.Controllers
 {
@@ -26,7 +26,7 @@ namespace Voicecord.Controllers
             if (ModelState.IsValid)
             {
                 var response = await _accountService.Register(model);
-                if (response.StatusCode == Domain.Enum.StatusCode.OK)
+                if (response.StatusCode == Voicecord.Response.StatusCode.OK)
                 {
                     await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
                         new ClaimsPrincipal(response.Data));
@@ -47,7 +47,7 @@ namespace Voicecord.Controllers
             if (ModelState.IsValid)
             {
                 var response = await _accountService.Login(model);
-                if (response.StatusCode == Domain.Enum.StatusCode.OK)
+                if (response.StatusCode == Voicecord.Response.StatusCode.OK)
                 {
                     await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
                         new ClaimsPrincipal(response.Data));
@@ -72,13 +72,12 @@ namespace Voicecord.Controllers
             if (ModelState.IsValid)
             {
                 var response = await _accountService.ChangePassword(model);
-                if (response.StatusCode == Domain.Enum.StatusCode.OK)
+                if (response.StatusCode == Voicecord.Response.StatusCode.OK)
                 {
                     return Json(new { description = response.Description });
                 }
             }
             var modelError = ModelState.Values.SelectMany(v => v.Errors);
-
             return StatusCode(StatusCodes.Status500InternalServerError, new { modelError.FirstOrDefault().ErrorMessage });
         }
     }
