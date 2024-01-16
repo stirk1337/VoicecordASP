@@ -9,8 +9,8 @@ namespace Voicecord.Data
                 : base(options)
         {
         }
-        public DbSet<ApplicationUser> Users { get; set; }
-        public DbSet<UserGroup> Groups { get; set; }
+        public virtual DbSet<ApplicationUser> Users { get; set; }
+        public virtual DbSet<UserGroup> Groups { get; set; }
         
     }
 }

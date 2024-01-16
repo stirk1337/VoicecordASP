@@ -200,6 +200,12 @@ namespace Voicecord.Services
             return groups;
         }
 
-
+        public async Task<List<UserGroup>> GetAllGroups()
+        {
+            var groups = await groupRepository
+                .GetAll()
+                .ToListAsync();
+            return groups;
+        }
     }
 }

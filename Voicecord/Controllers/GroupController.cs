@@ -36,6 +36,20 @@ namespace Voicecord.Controllers
             }
             return View(model);
         }
+        [HttpPost]
+        public async Task<IActionResult> CreateGroup(CreateGroupViewModel model, string userName)
+        {
+            if (ModelState.IsValid)
+            {
+                var response = await groupService.CreateGroup(model, userName);
+                if (response.StatusCode == Voicecord.Response.StatusCode.OK)
+                {
+                    return RedirectToAction("GetGroups", "Group");
+                }
+                ModelState.AddModelError("", response.Description);
+            }
+            return View(model);
+        }
 
         [HttpPost]
         public async Task<IActionResult> CreateTextChat(CreateTextChatViewModel model)
@@ -108,6 +122,20 @@ namespace Voicecord.Controllers
             if (ModelState.IsValid)
             {
                 var response = await groupService.AddToGroup(model.GroupLink, User.Identity.Name);
+                if (response.StatusCode == Voicecord.Response.StatusCode.OK)
+                {
+                    return RedirectToAction("GetGroups", "Group");
+                }
+                ModelState.AddModelError("", response.Description);
+            }
+            return View(model);
+        }
+        [HttpPost]
+        public async Task<IActionResult> AddToGroup(AddToGroupViewModel model, string userName)
+        {
+            if (ModelState.IsValid)
+            {
+                var response = await groupService.AddToGroup(model.GroupLink, userName);
                 if (response.StatusCode == Voicecord.Response.StatusCode.OK)
                 {
                     return RedirectToAction("GetGroups", "Group");
