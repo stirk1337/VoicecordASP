@@ -3,40 +3,25 @@
 
 @{
     Layout = "_Layout";
-    ViewBag.Title = "Создание группы";
+    ViewBag.Title = "Создание канала";
 }
+<br>
+<h3>Создание канала</h3>
 
-<div style="padding: 20px;"></div>
-
-<div class="container py-5">
-    <div class="row">
-        <div class="col-md-12">
-            <div class="row justify-content-center">
-                <div class="col-md-10">
-                    <span class="anchor"></span>
-                    <div class="card card-account card-outline-secondary border border-white">
-                        <div class="card-header">
-                            <h3 class="mb-0 text-center paragraphHome text-black">Регистрация</h3>
-                        </div>
-                        <div class="card-body">
                             <form asp-controller="Group" asp-action="CreateGroup">
-                                <div asp-validation-summary="All" style="font-size:23px; font-family:Impact" class="text-danger text-center"></div>
+                                <div asp-validation-summary="All"></div>
                                 <div class="form-group">
-                                    <input asp-for="NameGroup" class="form-control textbox-dg font-weight-bold text-center" placeholder="Название группы" type="text">
+        <label for="exampleInputEmail1">Название</label>
+                                    <input asp-for="NameGroup" class="form-control " placeholder="Название канала" type="text">
+
                                 </div>
                                 <div class="form-group">
-                                    <input asp-for="GroupLink" class="form-control textbox-dg font-weight-bold text-center" placeholder="Ссылка группы" type="text">
+        <label for="exampleInputEmail1">Секретная ссылка для входа в канал</label>
+                                    <input asp-for="GroupLink" class="form-control " placeholder="Ссылка канала" type="text">
                                 </div>
                                 <div class="form-group">
-                                    <input asp-for="CreatorId" value=@User.Identity.Name class="form-control textbox-dg font-weight-bold text-center" placeholder="login создателя" type="hidden">
+                                    <input asp-for="CreatorId" value=@User.Identity.Name class="form-control" placeholder="login создателя" type="hidden">
                                 </div>
-                                
-                                <button class="btn btn-success btn-lg float-right" type="submit">Отправить</button>
+                                <br>
+                                <button class="btn btn-primary" type="submit">Отправить</button>
                             </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>

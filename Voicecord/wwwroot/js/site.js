@@ -18,18 +18,20 @@ document.getElementById("SendMessage").addEventListener("click", function (event
 });
 connection.on("ReceiveMessage", function (user, message, disscusionId, dateTime) {
 
-    var encodedMsg = user + ": " + message;
-    var li = document.createElement("p");
-    li.textContent = encodedMsg;
+    var encodedMsg = message;
+    var li = document.createElement("li");
     console.log(disscusionId);
-    var li2 = document.createElement("li");
-    li2.textContent = dateTime;
-    document.getElementById(disscusionId).appendChild(li2);
+    var p1 = document.createElement("p");
+    var p2 = document.createElement("p");
+    p1.textContent = user + " " + dateTime;
+    p2.textContent = encodedMsg;
+    li.appendChild(p1);
+    li.appendChild(p2);
     document.getElementById(disscusionId).appendChild(li);
     console.log("appendChildNewMessage");
 });
 
-connection.on("JSmethod", function (userConnectionVoiceChat) {
+connection.on("SendAllUsersVoiceChat", function (userConnectionVoiceChat) {
     console.log(userConnectionVoiceChat);
     //var video_people = document.querySelector('.' + people-voice_chat_id);
     //while (video_people.firstChild) {
@@ -52,6 +54,7 @@ connection.on("JSmethod", function (userConnectionVoiceChat) {
             var user = key;
             var li = document.createElement("li");
             li.textContent = user;
+            li.classList.toggle("list-group-item");
             video_people.appendChild(li);
         }
     }

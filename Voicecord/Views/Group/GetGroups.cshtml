@@ -1,26 +1,24 @@
 ﻿@model IEnumerable<Voicecord.Models.UserGroup>
 
 @{
-    ViewData["Title"] = "GetGroup";
+    ViewData["Title"] = "Список каналов";
 }
-
-<h1>GetGroup</h1>
-
-<table class="table">
+<br>
+<h3 class="text-center">Список ваших каналов</h3>
+<br>
+<table class="table table-hover table-striped">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Name)
+               Название канала
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.LinkImageGroup)
+                Ссылка 
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-        <a href="/Group/CreateGroup/">Создать канал </a>
-        <a href="/Group/AddToGroup/"> Добавить канал</a>
         @foreach (var item in Model)
         {
             <tr>
@@ -31,9 +29,17 @@
                     @Html.DisplayFor(modelItem => item.LinkImageGroup) @item.Id
                 </td>
                 <td>
-                    <a asp-action="GetGroup" asp-route-id="@item.Id">Details</a>
+                    <a asp-action="GetGroup" asp-route-id="@item.Id">Войти в канал</a>
                 </td>
             </tr>
         }
     </tbody>
 </table>
+
+<form action="/Group/CreateGroup/">
+    <button type="submit" class="btn btn-primary btn-lg">Создать канал</button>
+</form>
+<br>
+<form action="/Group/AddToGroup/">
+    <button type="submit" class="btn btn-info  btn-lg">Подключиться к каналу</button>
+</form>

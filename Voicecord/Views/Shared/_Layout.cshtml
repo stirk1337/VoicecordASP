@@ -10,36 +10,26 @@
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-md navbar-light " style="background-color: #e3f2fd;">
             <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Voicecord</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
+                <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
 
-                        
-                         @if (!User.Identity.IsAuthenticated)
+                </div>
+                <div class="mx-auto order-0">
+                    <a class="navbar-brand mx-auto" href="/Home/Index/">Voicecord</a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".dual-collapse2">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                </div>
+                <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
+                    <ul class="navbar-nav ms-auto">
+                        @if (User.Identity.IsAuthenticated)
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Register">
-                                    Регистрация
-                                </a>
+                                <a id="username-header" class="nav-link" href="#">@User.Identity.Name</a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="Account" asp-action="Login">
-                                    Вход
-                                </a>
-                            </li>
-                        } 
-                       @if (User.Identity.IsAuthenticated)
-                        {
-                            <li class="nav-link text-dark"  id="username-header">@User.Identity.Name</li>
-
                             <form method="post" asp-controller="Account" asp-action="Logout">
-                                <input class="nav-link text-dark" type="submit" value="Выход" />
+                                <input class="btn nav-link" type="submit" value="Выход" style="color: red;" />
                             </form>
                         }
                     </ul>

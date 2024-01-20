@@ -1,25 +1,14 @@
 ﻿@{
-    ViewData["Title"] = "Voicecord";
+    ViewData["Title"] = "Главная";
 }
 
 <div class="text-center">
-    <div class="container"> 
-        <div>
-            <label>Ваш ник:</label>
-            <p id="username"> @User.Identity.Name</p>
-        </div>
 
-        <div class="mt-5">
-            <input type="text" id="message" />
-            <input type="button" id="SendMessage" value="Send" />
-        </div>
-    </div>
-    <div class="mt-3">
-        <ul id="discussion"></ul>
+    <img src="/images/logo.png" class="rounded float-right" width="200px" height="200px"/>
+    <h3 class="cover-heading">Voicecord.</h3>
+    <p class="w-25 p-3 mx-auto lead">Добро пожаловать в VoiceCord - гибкое приложение для общения, объединяющее текстовые сообщения и голосовые чаты. Создавайте голосовые каналы, общайтесь в тексте, присоединяйтесь к сообществам по интересам. Готовы перейти на новый уровень общения? Присоединяйтесь к VoiceCord прямо сейчас! 🎙️💬🌐
+    </p>
 
-    </div>
-    <a href="/Group/CreateGroup/">Создать канал</a>
-
+    <a href="/Group/GetGroups"class="btn btn-primary">Начать общаться!</a>
 </div>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/6.0.1/signalr.js"></script>
-<script src="~/js/site.js"></script>
+

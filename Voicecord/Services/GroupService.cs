@@ -171,8 +171,8 @@ namespace Voicecord.Services
             group = new UserGroup()
             {
                 Name = model.NameGroup,
-                Chats = new List<Chat>() { new Chat() { Messages = new List<Message>(), Name = "first chat" } },
-                Voices = new List<VoiceChat>() { new VoiceChat(), new VoiceChat() },
+                Chats = new List<Chat>() { new Chat() { Messages = new List<Message>(), Name = "Default Chat" } },
+                Voices = new List<VoiceChat>() { new VoiceChat() { Name = "Default Voice Chat" } },
                 LinkImageGroup = model.GroupLink,
                 Users = new List<ApplicationUser>() { user }
             };

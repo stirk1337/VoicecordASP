@@ -3,56 +3,20 @@
     ViewData["Title"] = "GetGroup";
 }
 
+<br>
+<p class="h2" id="linkGroup">@Model.LinkImageGroup</p>
 
+<p>Пользователи в этом канале:</p>
 
-
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.LinkImageGroup)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => Model.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => Model.LinkImageGroup)
-            </td>
-
-                @foreach (var voice in @Model.Voices)
-                {  
-                    <h4>@voice.Name</h4>
-                    <div class="voice-@voice.Id">
-                        <p>Пользователи в войс чате: </p>
-                        <ul class="people-voice-@voice.Id">
-
-                        </ul>
-                        <span>
-                            <h3 hidden id="user-name-@voice.Id">@User.Identity.Name</h3>
-                            <video id="webcamVideo-@voice.Id" autoplay playsinline width="750" height="340" hidden></video>
-                        </span>
-                    </div>
-                    <button id="callButton-@voice.Id" onclick="initialize_voice_chat(@voice.Id)">Вступить в звонок</button>
-                    <button id="hangupButton-@voice.Id" hidden onClick="disconnect_button(@voice.Id);">Отключиться</button> 
-                    if (voice.Users == null)
-                    {
-                        continue;
-                    }
-                    foreach (var userInVoiceChat in voice.Users)
-                    {
-                    <li>@userInVoiceChat</li>
-                    }
-                }
-
+<ul class="list-group">
+@foreach (var user in Model.Users)
+{
+        <li class="list-group-item">@user.UserName</li>
+}
+</ul>
+<br>
+<h3 class="text-center">Текстовые чаты</h3>
+<a asp-action="CreateTextChat" asp-route-id="@Model.Id" class="btn btn-outline-secondary">Создать текстовой чат</a>
             <div class="wrapper">
                 <div class="tabs">
                     <div class="tabs__nav tabs-nav">
@@ -64,8 +28,9 @@
                     </div>
                     <div class="tabs__content">
                         <div class="tab tab-0 is-active" data-tab-name="tab-0">
-                            <p id="tab-0">@Model.Chats[0].Id</p>
-                            <p id="chatId">@Model.Chats[0].Id</p>
+                            <p hidden id="tab-0">@Model.Chats[0].Id</p>
+                            <p hidden id="chatId">@Model.Chats[0].Id</p>
+                            <ul id="discussion-0">
                             @foreach (var message in Model.Chats[0].Messages)
                             {
 
@@ -74,21 +39,26 @@
                                     <p>@message.TextMessage</p>
                                 </li>
                             }
-                            <ul id="discussion-0"></ul>
+                            </ul>
+                            
                         </div>
                         <p id="chats_count" hidden>@Model.Chats.Count</p>
                         @for (var i = 1; i < Model.Chats.Count; i++)
                         {
 
-                            @* <p id="chatId-@i">@Model.Chats[0].Id </p> *@
+                            @* <p hidden id="chatId-@i">@Model.Chats[0].Id </p> *@
                             <div class="tab tab-@i" data-tab-name="tab-@i">
-                                <p id="tab-@i">@Model.Chats[i].Id</p>
+                                <p hidden id="tab-@i">@Model.Chats[i].Id</p>
+                             <ul id="discussion-@i">
                                 @foreach (var message in Model.Chats[i].Messages)
                                 {
-                                    <li>@message.Owner.UserName @message.Date.ToString()
-                                        <p>@message.TextMessage</p></li>
+                                    <li>
+                            <p>@message.Owner.UserName @message.Date.ToShortTimeString()</p>
+                                     <p>@message.TextMessage</p>
+                            </li>
                                 }
-                                <ul id="discussion-@i"></ul>
+
+                                </ul>
                             </div>
                         }
                         <div class="mt-3">
@@ -99,10 +69,10 @@
             </div>
             <div class="text-center">
                 <div class="container">
-                    <p id="username">@User.Identity.Name</p>
                     <div class="mt-5">
-                        <input type="text" id="message" />
-                        <input type="button" id="SendMessage" value="Send" />
+            <input class="form-control" type ="text" id="message" />
+            <br>
+                        <input class="btn btn-primary "type="button" id="SendMessage" value="Отправить сообщение" />
 
                     </div>
                 </div>
@@ -110,69 +80,38 @@
 
             </div>
 
+<br>
+<h3 class="text-center">Голосовые чаты</h3>
+    <a asp-action="CreateVoiceChat" asp-route-id="@Model.Id" class="btn btn-outline-secondary">Создать голосовой чат</a>
+<div class="col-xs-1 text-center">
+    @foreach (var voice in @Model.Voices)
+    {
+        <h5>@voice.Name</h5>
+        <div class="voice-@voice.Id">
+            <ul class="people-voice-@voice.Id list-group">
+            </ul>
+            <span>
+                <h3 hidden id="user-name-@voice.Id">@User.Identity.Name</h3>
+                <video id="webcamVideo-@voice.Id" autoplay playsinline width="750" height="340" hidden></video>
+            </span>
+        </div>
+        <button class="btn btn-success" id="callButton-@voice.Id" onclick="initialize_voice_chat(@voice.Id)">Вступить в звонок</button>
+        <br>
+        <button class="btn btn-danger" id="hangupButton-@voice.Id" hidden onClick="disconnect_button(@voice.Id);">Отключиться</button>
+        if (voice.Users == null)
+        {
+            continue;
+        }
+        foreach (var userInVoiceChat in voice.Users)
+        {
+            <li>@userInVoiceChat</li>
+        }
+    }
+
+                <script src="~/js/tabs.js"></script>
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/6.0.1/signalr.js"></script>
+                <script src="~/js/site.js"></script>
+ </div>
 
 
-            <a asp-action="CreateTextChat" asp-route-id="@Model.Id">Create text chat</a>
-                or
-
-            <a asp-action="CreateVoiceChat" asp-route-id="@Model.Id">Create voice chat</a>
-            @* <div class="wrapper">
-            <div class="tabs">
-            <div class="tabs__nav tabs-nav">
-            <div class="tabs-nav__item is-active" data-tab-name="tab-1">Таб 1</div>
-            <div class="tabs-nav__item" data-tab-name="tab-2">Таб 2</div>
-            <div class="tabs-nav__item" data-tab-name="tab-3">Таб 3</div>
-            </div>
-            <div class="tabs__content">
-            <div class="tab is-active tab-1"> Содержание таба 1</div>
-            <div class="tab tab-2">Содержание таба 2</div>
-            <div class="tab tab-3">Содержание таба 3</div>
-            </div>
-            </div>
-            </div> *@
-            <li>
-
-                @*
-                @if (Model.Chats != null)
-                {
-                @foreach (var chat in @Model.Chats)
-                {
-
-                @foreach (var message in chat.Messages)
-                {
-                <li>
-                <p>@message.Owner.UserName @message.Date.ToString()</p>
-                <p>@message.TextMessage</p>
-                </li>
-                }
-                <div class="text-center">
-                <div class="container">
-                <p id="username">@User.Identity.Name</p>
-                <div class="mt-5">
-                <input type="text" id="message" />
-                <input type="button" id="SendMessage" value="Send" />
-                </div>
-                </div>
-                <div class="mt-3">
-                <ul id="discussion"></ul>
-
-                </div>
-
-
-                </div>
-                }
-                } *@
-            </li>
-            <p>Users</p>
-
-            @foreach (var user in Model.Users)
-            {
-                <li>@user.UserName</li>
-            }
-            <script src="~/js/tabs.js"></script>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/6.0.1/signalr.js"></script>
-            <script src="~/js/site.js"></script>
-            <p id="linkGroup">@Model.LinkImageGroup</p>
-        </tr>
-    </tbody>
-</table>
+            
