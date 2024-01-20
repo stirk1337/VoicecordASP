@@ -1,6 +1,8 @@
 # VoicecordASP
 
 ![v-letter2531](https://github.com/stirk1337/VoicecordASP/assets/63664630/ec7c239f-14a7-4ea1-ac25-f76d7d427350)
+![Безымян223ный](https://github.com/stirk1337/VoicecordASP/assets/63664630/f0d2d4a5-f152-4e7e-b3f2-804965695213)
+
 
 ## Про нас
 
