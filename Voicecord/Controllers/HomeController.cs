@@ -6,7 +6,6 @@ using Voicecord.Service.Implementations;
 
 namespace Voicecord.Controllers
 {
-    [Authorize]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;

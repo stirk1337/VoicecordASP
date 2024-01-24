@@ -17,7 +17,6 @@ namespace Voicecord.Data.Repositories
             return _db.Groups;
         }
 
-
         public async Task Delete(UserGroup entity)
         {
             _db.Groups.Remove(entity);

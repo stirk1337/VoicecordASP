@@ -30,7 +30,8 @@ namespace Voicecord.Controllers
                 var response = await groupService.CreateGroup(model, User.Identity.Name);
                 if (response.StatusCode == Voicecord.Response.StatusCode.OK)
                 {
-                    return RedirectToAction("GetGroups", "Group");
+                    return Redirect($"GetGroup/{response.Description}");
+                    
                 }
                 ModelState.AddModelError("", response.Description);
             }
@@ -45,7 +46,7 @@ namespace Voicecord.Controllers
                 var response = await groupService.CreateTextChat(model, User.Identity.Name);
                 if (response.StatusCode == Voicecord.Response.StatusCode.OK)
                 {
-                    return RedirectToAction("GetGroups", "Group");
+                    return Redirect($"~/Group/GetGroup/{response.Description}");
                 }
                 ModelState.AddModelError("", response.Description);
             }
@@ -55,7 +56,7 @@ namespace Voicecord.Controllers
         [HttpGet]
         public async Task<IActionResult> CreateTextChat(int id)
         {
-            var group = await groupService.GetGroup(id);
+            var group = await groupService.GetGroup(id, User.Identity.Name);
             var model = new CreateTextChatViewModel()
             {
                 GroupLink = group.Id
@@ -72,7 +73,7 @@ namespace Voicecord.Controllers
                 var response = await groupService.CreateVoiceChat(model, User.Identity.Name);
                 if (response.StatusCode == Voicecord.Response.StatusCode.OK)
                 {
-                    return RedirectToAction("GetGroups", "Group");
+                    return Redirect($"~/Group/GetGroup/{response.Description}");
                 }
                 ModelState.AddModelError("", response.Description);
             }
@@ -82,7 +83,7 @@ namespace Voicecord.Controllers
         [HttpGet]
         public async Task<IActionResult> CreateVoiceChat(int id)
         {
-            var group = await groupService.GetGroup(id);
+            var group = await groupService.GetGroup(id, User.Identity.Name);
             var model = new CreateTextChatViewModel()
             {
                 GroupLink = group.Id
@@ -110,7 +111,7 @@ namespace Voicecord.Controllers
                 var response = await groupService.AddToGroup(model.GroupLink, User.Identity.Name);
                 if (response.StatusCode == Voicecord.Response.StatusCode.OK)
                 {
-                    return RedirectToAction("GetGroups", "Group");
+                    return Redirect($"GetGroup/{response.Description}");
                 }
                 ModelState.AddModelError("", response.Description);
             }
@@ -120,7 +121,7 @@ namespace Voicecord.Controllers
         [HttpGet]
         public async Task<IActionResult> GetGroup(int id)
         {
-            var group = await groupService.GetGroup(id);
+            var group = await groupService.GetGroup(id, User.Identity.Name);
             return View(group);
         }
 

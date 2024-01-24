@@ -50,7 +50,7 @@ namespace Voicecord.Services
                 return new BaseResponse<bool>()
                 {
                     Data = true,
-                    Description = "Голосовой чат добавился",
+                    Description = group.Id.ToString(),
                     StatusCode = StatusCode.OK
                 };
             }
@@ -85,7 +85,7 @@ namespace Voicecord.Services
                 return new BaseResponse<bool>()
                 {
                     Data = true,
-                    Description = "Текстовый чат добавился",
+                    Description = group.Id.ToString(),
                     StatusCode = StatusCode.OK
                 };
             }
@@ -116,7 +116,7 @@ namespace Voicecord.Services
             return new BaseResponse<bool>()
             {
                 Data = true,
-                Description = "Пользователь добавился",
+                Description = group.Id.ToString(),
                 StatusCode = StatusCode.OK
             };
         }
@@ -135,10 +135,11 @@ namespace Voicecord.Services
                 }
 
                 await AddGroupToDatabase(model, creatorName);
+                var groupId = await groupRepository.GetAll().FirstOrDefaultAsync(x => x.LinkImageGroup == model.GroupLink);
                 return new BaseResponse<bool>()
                 {
                     Data = true,
-                    Description = "Сервер добавился",
+                    Description = groupId?.Id.ToString(),
                     StatusCode = StatusCode.OK
                 };
             }
@@ -179,7 +180,7 @@ namespace Voicecord.Services
             await groupRepository.Create(group);
         }
 
-        public async Task<UserGroup> GetGroup(int groupId)
+        public async Task<UserGroup> GetGroup(int groupId, string userName)
         {
             var group = await groupRepository.GetAll()
                 .Include(x => x.Users)
@@ -187,7 +188,12 @@ namespace Voicecord.Services
                 .Include(x => x.Chats).ThenInclude(x => x.Messages)
                 .Where(x => x.Id == groupId)
                 .FirstAsync();
-            return group;
+            if(group.Users.Select(x=>x.UserName).ToList().Contains(userName)) 
+            {
+                return group;
+            }
+            return null;
+            
         }
 
         public async Task<List<UserGroup>> GetGroups(string UserName)
