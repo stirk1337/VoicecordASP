@@ -2,7 +2,7 @@
 
 namespace Voicecord.Models
 {
-    public class OffersAnswers
+    public class OffersAnswers : Interfaces.IModel
     {
         [Key]
         public int Id { get; set; }
